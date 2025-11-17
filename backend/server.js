@@ -41,7 +41,7 @@ mongoose
 	.then(() => console.log('MongoDB connected'))
 	.catch(err => console.error('MongoDB connection error:', err))
 
-// app.use('/api/auth', require('./routes/auth'))
+app.use('/api/auth', require('./routes/auth'))
 // app.use('/api/doctor', require('./routes/doctor'))
 // app.use('/api/patient', require('./routes/patient'))
 // app.use('/api/appointment', require('./routes/appointment'))
