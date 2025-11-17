@@ -6,6 +6,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 
+const response = require('./middleware/response')
+
 const app = express()
 
 //helmet is a security middleware for Express
@@ -27,8 +29,26 @@ app.use(
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+//used response
+app.use(response)
+
+//Mongodb connection
+mongoose
+	.connect(process.env.MONGO_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => console.log('MongoDB connected'))
+	.catch(err => console.error('MongoDB connection error:', err))
+
+// app.use('/api/auth', require('./routes/auth'))
+// app.use('/api/doctor', require('./routes/doctor'))
+// app.use('/api/patient', require('./routes/patient'))
+// app.use('/api/appointment', require('./routes/appointment'))
+// app.use('/api/payment', require('./routes/payment'))
+
 app.get('/health', (req, res) =>
-	res.cookie({ time: new Date().toISOString() }, 'OK ')
+	res.ok({ time: new Date().toISOString() }, 'OK ')
 )
 
 const PORT = process.env.PORT || 8000
