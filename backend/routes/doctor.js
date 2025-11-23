@@ -3,7 +3,7 @@ const { query, body } = require('express-validator')
 const validate = require('../middleware/validate')
 const { authenticate, requireRole } = require('../middleware/auth')
 const Doctor = require('../modal/Doctor')
-const Appointment = require('../modal/Appointment')
+// const Appointment = require('../modal/Appointment')
 
 const router = express.Router()
 
@@ -259,4 +259,4 @@ router.put(
 // 	}
 // })
 
-// module.exports = router
+module.exports = router

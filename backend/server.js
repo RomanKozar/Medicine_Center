@@ -5,6 +5,8 @@ const morgan = require('morgan')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 require('dotenv').config()
+require('./config/passport')
+const passportLib = require('passport')
 
 const response = require('./middleware/response')
 
@@ -32,6 +34,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 //used response
 app.use(response)
 
+//Initialize passport
+app.use(passportLib.initialize())
+
 //Mongodb connection
 mongoose
 	.connect(process.env.MONGO_URL, {
@@ -42,8 +47,8 @@ mongoose
 	.catch(err => console.error('MongoDB connection error:', err))
 
 app.use('/api/auth', require('./routes/auth'))
-// app.use('/api/doctor', require('./routes/doctor'))
-// app.use('/api/patient', require('./routes/patient'))
+app.use('/api/doctor', require('./routes/doctor'))
+app.use('/api/patient', require('./routes/patient'))
 // app.use('/api/appointment', require('./routes/appointment'))
 // app.use('/api/payment', require('./routes/payment'))
 
