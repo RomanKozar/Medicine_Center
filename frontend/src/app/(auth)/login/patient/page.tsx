@@ -1,7 +1,11 @@
-import React from 'react'
+import AuthForm from '@/components/auth/AuthForm'
 
-const page = () => {
-	return <div>page</div>
+export const metadata = {
+	title: 'Patient Login - MediCare+',
+	description:
+		'Sign in to your MediCare+ account to access healthcare consultations.',
 }
 
-export default page
+export default function PatientLoginPage() {
+	return <AuthForm type='login' userRole='patient' />
+}

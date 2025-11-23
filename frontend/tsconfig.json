@@ -28,7 +28,8 @@
 		"**/*.tsx",
 		".next/types/**/*.ts",
 		"src/app/(auth)/signup/layo",
-		"src/app/(auth)/login/doctor"
+		"src/app/(auth)/login/doctor",
+		"src/components/auth/AuthForm.jsx"
 	],
 	"exclude": ["node_modules"]
 }
