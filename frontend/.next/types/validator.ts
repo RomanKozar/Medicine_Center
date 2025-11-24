@@ -72,6 +72,42 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../src/app/(dashboard)/doctor/dashboard/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/doctor/dashboard">> = Specific
+  const handler = {} as typeof import("../../src/app/(dashboard)/doctor/dashboard/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/(dashboard)/patient/dashboard/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/patient/dashboard">> = Specific
+  const handler = {} as typeof import("../../src/app/(dashboard)/patient/dashboard/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/onboading/doctor/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/onboading/doctor">> = Specific
+  const handler = {} as typeof import("../../src/app/onboading/doctor/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/onboading/patient/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/onboading/patient">> = Specific
+  const handler = {} as typeof import("../../src/app/onboading/patient/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/">> = Specific
@@ -100,6 +136,15 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
 {
   type __IsExpected<Specific extends LayoutConfig<"/">> = Specific
   const handler = {} as typeof import("../../src/app/layout.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/onboading/layout.tsx
+{
+  type __IsExpected<Specific extends LayoutConfig<"/onboading">> = Specific
+  const handler = {} as typeof import("../../src/app/onboading/layout.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

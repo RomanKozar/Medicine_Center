@@ -16,10 +16,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(auth)/layout.js"
     ],
-    "/(auth)/signup/patient/page": [
+    "/(auth)/login/doctor/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/signup/patient/page.js"
+      "static/chunks/app/(auth)/login/doctor/page.js"
+    ],
+    "/(auth)/signup/doctor/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(auth)/signup/doctor/page.js"
     ]
   }
 }
