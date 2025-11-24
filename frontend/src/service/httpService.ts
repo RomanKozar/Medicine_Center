@@ -35,7 +35,7 @@ class HttpService {
 		options?: RequestOptions
 	): Promise<ApiResponse<T>> {
 		try {
-			const url = `${BASE_URL}${endPoint}`
+			const url = `${BASE_URL}/${endPoint}`
 			const headers = {
 				...this.getHeaders(auth),
 				...options?.headers,

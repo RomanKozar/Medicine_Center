@@ -1,24 +1,23 @@
 'use client'
+import { userAuthStore } from '@/store/authStore'
 import { is } from 'date-fns/locale'
 import { redirect } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-	const isAuthenticated = false
+	const { user, isAuthenticated } = userAuthStore()
 
-	const user = {
-		type: 'patient',
-		name: 'Roman',
-		profileImage: '/placeholder.png',
-		email: 'kozarrma2004@gmail.com',
-	}
 	useEffect(() => {
 		if (isAuthenticated && user) {
-			const redirectPath =
-				isAuthenticated && user?.type === 'doctor'
-					? '/doctor/dashboard'
-					: '/patient/dashboard'
-			redirect(redirectPath)
+			if (!user.isVerified) {
+				redirect(`/onboarding/${user.type}`)
+			} else {
+				if (user.type === 'doctor') {
+					redirect('/doctor/dashboard')
+				} else {
+					redirect('/patient/dashboard')
+				}
+			}
 		}
 	}, [isAuthenticated, user])
 	return (

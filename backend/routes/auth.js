@@ -25,10 +25,7 @@ router.post(
 			const exists = await Doctor.findOne({ email: req.body.email })
 			if (exists) return res.badRequest('Doctor alredy exists')
 			const hashed = await bcrypt.hash(req.body.password, 12)
-			const doc = await Doctor.healthcareCategoriesList({
-				...req.body,
-				password: hashed,
-			})
+			const doc = Doctor.create({ ...req.body, password: hashed })
 			const token = signToken(doc._id, 'doctor')
 			res.created(
 				{ token, user: { id: doc._id, type: 'doctor' } },

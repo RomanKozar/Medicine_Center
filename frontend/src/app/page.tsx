@@ -4,17 +4,16 @@ import Footer from '@/components/landing/Footer'
 import Header from '@/components/landing/Header'
 import LandingHero from '@/components/landing/LandingHero'
 import TestimonialsSection from '@/components/landing/TestimonialsSection'
+import { userAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function Home() {
-	const user = {
-		type: 'pa',
-	}
+	const { user } = userAuthStore()
 	const router = useRouter()
 
 	useEffect(() => {
-		if (user.type === 'doctor') {
+		if (user?.type === 'doctor') {
 			router.replace('/doctor/dashboard')
 		}
 	}, [user, router])
@@ -34,4 +33,7 @@ export default function Home() {
 			</main>
 		</div>
 	)
+}
+function useUserAuthStore(): { user: any } {
+	throw new Error('Function not implemented.')
 }

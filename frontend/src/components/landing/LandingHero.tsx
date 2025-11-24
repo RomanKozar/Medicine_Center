@@ -4,9 +4,10 @@ import { Button } from '../ui/button'
 import Link from 'next/link'
 import { healthcareCategories } from '@/lib/constant'
 import { useRouter } from 'next/navigation'
+import { userAuthStore } from '@/store/authStore'
 
 const LandingHero = () => {
-	const isAuthenticated = false
+	const { isAuthenticated } = userAuthStore()
 	const router = useRouter()
 
 	const handleBookConsultation = () => {

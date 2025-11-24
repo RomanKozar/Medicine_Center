@@ -53,7 +53,7 @@ app.use('/api/patient', require('./routes/patient'))
 // app.use('/api/payment', require('./routes/payment'))
 
 app.get('/health', (req, res) =>
-	res.ok({ time: new Date().toISOString() }, 'OK ')
+	res.ok({ time: new Date().toISOString() }, 'OK')
 )
 
 const PORT = process.env.PORT || 8000

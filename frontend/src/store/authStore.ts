@@ -122,7 +122,7 @@ export const userAuthStore = create<AuthState>()(
 				try {
 					const { user } = get()
 					if (!user) throw new Error('No user found')
-					const endPoint = user.type === 'doctor' ? '/doctor/me' : '/patient/me'
+					const endPoint = user.type === 'doctor' ? 'doctor/me' : 'patient/me'
 					const response = await getWithAuth(endPoint)
 					set({ user: { ...user, ...response.data } })
 					return response.data
@@ -141,8 +141,8 @@ export const userAuthStore = create<AuthState>()(
 					if (!user) throw new Error('No user found')
 					const endPoint =
 						user.type === 'doctor'
-							? '/doctor/onboarding/update'
-							: '/patient/onboarding/update'
+							? 'doctor/onboarding/update'
+							: 'patient/onboarding/update'
 					const response = await putWithAuth(endPoint, data)
 					set({ user: { ...user, ...response.data } })
 				} catch (error: any) {

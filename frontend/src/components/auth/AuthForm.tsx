@@ -10,13 +10,14 @@ import { Eye, EyeOff } from 'lucide-react'
 import { userAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { is, ro } from 'date-fns/locale'
 
 interface AuthFormProps {
 	type: 'login' | 'signup'
 	userRole: 'doctor' | 'patient'
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL
+//const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 const AuthForm = ({ type, userRole }: AuthFormProps) => {
 	const [formData, setFormData] = useState({
@@ -34,9 +35,25 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 		loginDoctor,
 		loading,
 		error,
+		// isAuthenticated,
+		// user,
 	} = userAuthStore()
 
 	const router = useRouter()
+
+	// useEffect(() => {
+	// 	if (isAuthenticated && user) {
+	// 		if (!user.isVerified) {
+	// 			router.push(`/onboarding/${user.type}`)
+	// 		} else {
+	// 			if (user.type === 'doctor') {
+	// 				router.push('/doctor/dashboard')
+	// 			} else {
+	// 				router.push('/patient/dashboard')
+	// 			}
+	// 		}
+	// 	}
+	// }, [isAuthenticated, user, router])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -74,7 +91,7 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 	}
 
 	const handleGoogleAuth = () => {
-		window.location.href = `${BASE_URL}/auth/google?type=${userRole}`
+		window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google?type=${userRole}`
 	}
 
 	const isSignup = type === 'signup'

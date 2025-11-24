@@ -22,6 +22,7 @@ import {
 } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { profile } from 'console'
+import { userAuthStore } from '@/store/authStore'
 
 interface HeaderProps {
 	showDashboardNav?: boolean
@@ -35,14 +36,7 @@ interface NavigationItem {
 }
 
 const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
-	const user = {
-		type: 'patient',
-		name: 'Roman',
-		profileImage: '/placeholder.png',
-		email: 'kozarrma2004@gmail.com',
-	}
-
-	const isAuthenticated = false
+	const { user, isAuthenticated } = userAuthStore()
 
 	const pathname = usePathname()
 
