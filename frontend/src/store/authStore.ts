@@ -94,7 +94,7 @@ export const userAuthStore = create<AuthState>()(
 			registerDoctor: async data => {
 				set({ loading: true, error: null })
 				try {
-					const response = await postWithoutAuth('/auth/doctor/register', data)
+					const response = await postWithoutAuth('auth/doctor/register', data)
 					get().setUser(response.data.user, response.data.token)
 				} catch (error: any) {
 					set({ error: error.message })
@@ -107,7 +107,7 @@ export const userAuthStore = create<AuthState>()(
 			registerPatient: async data => {
 				set({ loading: true, error: null })
 				try {
-					const response = await postWithoutAuth('/auth/patient/register', data)
+					const response = await postWithoutAuth('auth/patient/register', data)
 					get().setUser(response.data.user, response.data.token)
 				} catch (error: any) {
 					set({ error: error.message })

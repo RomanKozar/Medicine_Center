@@ -1,5 +1,10 @@
 {
   "/page": "app/page.js",
+  "/(dashboard)/doctor/dashboard/page": "app/(dashboard)/doctor/dashboard/page.js",
   "/(dashboard)/patient/dashboard/page": "app/(dashboard)/patient/dashboard/page.js",
-  "/onboarding/patient/page": "app/onboarding/patient/page.js"
+  "/onboarding/doctor/page": "app/onboarding/doctor/page.js",
+  "/(auth)/login/patient/page": "app/(auth)/login/patient/page.js",
+  "/(auth)/signup/patient/page": "app/(auth)/signup/patient/page.js",
+  "/onboarding/patient/page": "app/onboarding/patient/page.js",
+  "/(auth)/login/doctor/page": "app/(auth)/login/doctor/page.js"
 }
