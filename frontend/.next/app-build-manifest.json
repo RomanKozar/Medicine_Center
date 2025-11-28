@@ -6,20 +6,30 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/doctor-list/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/doctor-list/page.js"
+    ],
+    "/(dashboard)/doctor/dashboard/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/doctor/dashboard/page.js"
+    ],
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
-    "/(dashboard)/patient/dashboard/page": [
+    "/(auth)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/patient/dashboard/page.js"
+      "static/chunks/app/(auth)/layout.js"
     ],
-    "/doctor-list/page": [
+    "/(auth)/login/doctor/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/doctor-list/page.js"
+      "static/chunks/app/(auth)/login/doctor/page.js"
     ]
   }
 }

@@ -78,15 +78,15 @@ export const useDoctorStore = create<DoctorState>((set, get) => ({
 		}
 	},
 
-	// fetchDashboard: async () => {
-	// 	set({ loading: true, error: null })
-	// 	try {
-	// 		const response = await getWithAuth('/doctor/dashboard')
-	// 		set({ dashboard: response.data })
-	// 	} catch (error: any) {
-	// 		set({ error: error.message })
-	// 	} finally {
-	// 		set({ loading: false, error: null })
-	// 	}
-	// },
+	fetchDashboard: async () => {
+		set({ loading: true, error: null })
+		try {
+			const response = await getWithAuth('/doctor/dashboard')
+			set({ dashboard: response.data })
+		} catch (error: any) {
+			set({ error: error.message })
+		} finally {
+			set({ loading: false, error: null })
+		}
+	},
 }))
