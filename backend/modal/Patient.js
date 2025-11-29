@@ -40,7 +40,7 @@ const pateintSchema = new mongoose.Schema(
 		medicalHistory: medicalHistorySchema,
 
 		isVerified: { type: Boolean, default: false },
-		// isActive: { type: Boolean, default: true },
+		isActive: { type: Boolean, default: true },
 	},
 	{ timestamps: true }
 )

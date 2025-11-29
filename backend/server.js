@@ -49,7 +49,7 @@ mongoose
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/doctor', require('./routes/doctor'))
 app.use('/api/patient', require('./routes/patient'))
-// app.use('/api/appointment', require('./routes/appointment'))
+app.use('/api/appointment', require('./routes/appointment'))
 // app.use('/api/payment', require('./routes/payment'))
 
 app.get('/health', (req, res) =>
