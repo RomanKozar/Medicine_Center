@@ -139,7 +139,7 @@ router.get(
 	requireRole('doctor'),
 	async (req, res) => {
 		try {
-			const doctorId = req.auth.id
+			const doctorId = req.id //req.auth.id
 			const now = new Date()
 
 			//Proper date range calculation

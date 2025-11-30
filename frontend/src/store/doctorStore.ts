@@ -21,7 +21,7 @@ interface DoctorState {
 	//Api Action
 	fetchDoctors: (filters: DoctorFilters) => Promise<void>
 	fetchDoctorById: (id: string) => Promise<void>
-	//fetchDashboard: (period?: string) => Promise<void>
+	fetchDashboard: (period?: string) => Promise<void>
 }
 
 export const useDoctorStore = create<DoctorState>((set, get) => ({
