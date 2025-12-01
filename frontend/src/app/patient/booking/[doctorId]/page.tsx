@@ -32,10 +32,10 @@ const page = () => {
 	const [isPaymentProcessing, setIsPaymentProcessing] = useState(false)
 	const [availableDates, setAvailableDates] = useState<string[]>([])
 	const [availableSlots, setAvailableSlots] = useState<string[]>([])
-	// const [createdAppointmentId, setCreatedAppointmentId] = useState<
-	// 	string | null
-	// >(null)
-	// const [patientName, setPatientName] = useState<string>('')
+	const [createdAppointmentId, setCreatedAppointmentId] = useState<
+		string | null
+	>(null)
+	const [patientName, setPatientName] = useState<string>('')
 
 	useEffect(() => {
 		if (doctorId) {
@@ -137,8 +137,7 @@ const page = () => {
 			const platformFees = Math.round(consultationFees * 0.1)
 			const totalAmount = consultationFees + platformFees
 
-			// const appointment =
-			await bookAppointment({
+			const appointment = await bookAppointment({
 				doctorId: doctorId,
 				slotStartIso: slotStart.toISOString(),
 				slotEndIso: slotEnd.toISOString(),
@@ -151,13 +150,13 @@ const page = () => {
 			})
 
 			//store appointemnt Id and patinet name for paymnet
-			// if (appointment && appointment?._id) {
-			// 	setCreatedAppointmentId(appointment._id)
-			// 	setPatientName(appointment.patientId.name || 'Patient')
-			// } else {
-			await new Promise(resolve => setTimeout(resolve, 3000))
-			router.push('/patient/dashboard')
-			// }
+			if (appointment && appointment?._id) {
+				setCreatedAppointmentId(appointment._id)
+				setPatientName(appointment.patientId.name || 'Patient')
+			} else {
+				await new Promise(resolve => setTimeout(resolve, 3000))
+				router.push('/patient/dashboard')
+			}
 		} catch (error: any) {
 			console.error(error)
 			setIsPaymentProcessing(false)
@@ -170,9 +169,9 @@ const page = () => {
 		return Math.max(0, basePrice + typePrice)
 	}
 
-	// const handlePaymentSuccess = (appointment: any) => {
-	// 	router.push('/patient/dashboard')
-	// }
+	const handlePaymentSuccess = (appointment: any) => {
+		router.push('/patient/dashboard')
+	}
 
 	if (!currentDoctor) {
 		return (
@@ -285,7 +284,6 @@ const page = () => {
 											/>
 										</motion.div>
 									)}
-
 									{currentStep === 2 && (
 										<motion.div
 											key='step2'
@@ -304,7 +302,6 @@ const page = () => {
 											/>
 										</motion.div>
 									)}
-
 									{currentStep === 3 && (
 										<motion.div
 											key='step3'
@@ -322,7 +319,7 @@ const page = () => {
 												isProcessing={isPaymentProcessing}
 												onBack={() => setCurrentStep(2)}
 												onConfirm={handleBooking}
-												onPaymentSuccess={handlePaymentSuccess}
+												onPaymentSuccess={handlePaymentSuccess} // ✅ Ця функція тепер є
 												loading={loading}
 												appointmentId={createdAppointmentId || undefined}
 												patientName={patientName || undefined}

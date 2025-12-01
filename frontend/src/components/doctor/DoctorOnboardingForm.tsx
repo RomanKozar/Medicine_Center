@@ -220,7 +220,7 @@ const DoctorOnboardingForm = () => {
 							</div>
 
 							<div className='space-y-2'>
-								<Label htmlFor='fees'>Consultations Fee (₹) </Label>
+								<Label htmlFor='fees'>Consultations Fee ($) </Label>
 								<Input
 									id='fees'
 									name='fees'

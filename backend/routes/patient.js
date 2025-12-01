@@ -2,7 +2,7 @@ const express = require('express')
 const Patient = require('../modal/Patient')
 const { authenticate, requireRole } = require('../middleware/auth')
 const { body } = require('express-validator')
-const { computeAgeFromDob } = require('../utils/data')
+const { computeAgeFromDob } = require('../utils/date')
 const validate = require('../middleware/validate')
 
 const router = express.Router()

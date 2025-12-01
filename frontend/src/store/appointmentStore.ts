@@ -140,7 +140,7 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 		set({ loading: true, error: null })
 		try {
 			const response = await getWithAuth(
-				`/appointment/booked-slots/${doctorId}/${date}`
+				`appointment/booked-slots/${doctorId}/${date}`
 			)
 			set({ bookedSlots: response?.data })
 		} catch (error: any) {
@@ -153,7 +153,7 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 	bookAppointment: async data => {
 		set({ loading: true, error: null })
 		try {
-			const response = await postWithAuth('/appointment/book', data)
+			const response = await postWithAuth('appointment/book', data)
 			set(state => ({
 				appointments: [response.data, ...state.appointments],
 			}))

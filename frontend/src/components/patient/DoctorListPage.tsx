@@ -343,7 +343,7 @@ const DoctorListPage = () => {
 												Consultation Fee:
 											</p>
 											<p className='font-bold text-green-600 text-lg'>
-												₹{doctor.fees}
+												${doctor.fees}
 											</p>
 										</div>
 									</div>

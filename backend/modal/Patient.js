@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const { computeAgeFromDob } = require('../utils/date')
+const { computeAgeFromDob } = require('../utils/date')
 
 const emergencyContactSchema = new mongoose.Schema(
 	{
