@@ -1,7 +1,4 @@
 {
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/patient/booking/[doctorId]/page": "app/patient/booking/[doctorId]/page.js",
-  "/doctor-list/page": "app/doctor-list/page.js",
-  "/page": "app/page.js",
-  "/(dashboard)/patient/dashboard/page": "app/(dashboard)/patient/dashboard/page.js"
+  "/page": "app/page.js"
 }
