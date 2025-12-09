@@ -88,7 +88,7 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 		set({ loading: true, error: null })
 		try {
 			const endPoint =
-				role === 'doctor' ? '/appointment/doctor' : '/appointment/patient'
+				role === 'doctor' ? 'appointment/doctor' : 'appointment/patient'
 			const queryParams = new URLSearchParams()
 			if (tab === 'upcoming') {
 				queryParams.append('status', 'Scheduled')

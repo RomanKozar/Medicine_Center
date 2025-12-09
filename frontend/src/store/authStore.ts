@@ -117,6 +117,22 @@ export const userAuthStore = create<AuthState>()(
 				}
 			},
 
+			// fetchProfile: async (): Promise<User | null> => {
+			// 	set({ loading: true, error: null })
+			// 	try {
+			// 		const { user } = get()
+			// 		if (!user) throw new Error('No user found')
+			// 		const endPoint = user.type === 'doctor' ? 'doctor/me' : 'patient/me'
+			// 		const response = await getWithAuth(endPoint)
+			// 		set({ user: { ...user, ...response.data } })
+			// 		return response.data
+			// 	} catch (error: any) {
+			// 		set({ error: error.message })
+			// 		return null
+			// 	} finally {
+			// 		set({ loading: false })
+			// 	}
+			// },
 			fetchProfile: async (): Promise<User | null> => {
 				set({ loading: true, error: null })
 				try {
@@ -127,6 +143,19 @@ export const userAuthStore = create<AuthState>()(
 					set({ user: { ...user, ...response.data } })
 					return response.data
 				} catch (error: any) {
+					// ➡️ ДОДАНО: Обробка простроченого токена
+					if (error.message === 'Invalid or expired token') {
+						// Очистити токен і перенаправити на логін
+						localStorage.removeItem('token')
+						sessionStorage.removeItem('token') // Хоча ви використовуєте лише localStorage, краще очистити обидва
+						set({
+							user: null,
+							token: null,
+							isAuthenticated: false,
+							error: null,
+						})
+						window.location.href = '/login'
+					}
 					set({ error: error.message })
 					return null
 				} finally {

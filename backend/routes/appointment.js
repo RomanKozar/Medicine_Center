@@ -41,7 +41,7 @@ router.get(
 			res.ok(appointment, 'Appointment fetched successfully')
 		} catch (error) {
 			console.error('Doctor appointment fetch error', error)
-			res, serverError('Failed to fetch appointment', [error.message])
+			res.serverError('Failed to fetch appointment', [error.message])
 		}
 	}
 )
@@ -62,6 +62,8 @@ router.get(
 
 	async (req, res) => {
 		try {
+			// ВИПРАВЛЕННЯ: Додано логування
+			console.log('Auth user:', req.auth)
 			const { status } = req.query
 			const filter = { patientId: req.auth.id }
 
@@ -80,7 +82,7 @@ router.get(
 			res.ok(appointment, 'Appointment fetched successfully')
 		} catch (error) {
 			console.error('Patient appointment fetch error', error)
-			res, serverError('Failed to fetch appointment', [error.message])
+			res.serverError('Failed to fetch appointment', [error.message])
 		}
 	}
 )
@@ -104,7 +106,8 @@ router.get('/booked-slots/:doctorId/:date', async (req, res) => {
 
 		res.ok(bookedSlot, 'Booked slot retrieved')
 	} catch (error) {
-		res, serverError('Failed to fetch booked slot', [error.message])
+		// ВИПРАВЛЕННЯ: синтаксична помилка (res, serverError)
+		res.serverError('Failed to fetch booked slot', [error.message])
 	}
 })
 
@@ -154,9 +157,8 @@ router.post('/book', authenticate, requireRole('patient'), [
 
 			if (confictingAppointment) {
 				return res.forbidden('This time slot is alredy booked')
-			}
+			} //Generate unique roomId
 
-			//Generate unique roomId
 			const zegoRoomId = `room_${Date.now()}_${Math.random()
 				.toString(36)
 				.substr(2, 9)}`
@@ -188,8 +190,8 @@ router.post('/book', authenticate, requireRole('patient'), [
 
 			res.created(appointment, 'Appointment booked successfully')
 		} catch (error) {
-			console.error('Book appointment error', error)
-			res, serverError('Failed to book appointment', [error.message])
+			console.error('Book appointment error', error) // ВИПРАВЛЕННЯ: синтаксична помилка (res, serverError)
+			res.serverError('Failed to book appointment', [error.message])
 		}
 	},
 ])
@@ -213,8 +215,8 @@ router.get('/join/:id', authenticate, async (req, res) => {
 			'Consultation joined successfully'
 		)
 	} catch (error) {
-		console.error('Join consultation error', error)
-		res, serverError('Failed to Join consultation', [error.message])
+		console.error('Join consultation error', error) // ВИПРАВЛЕННЯ: синтаксична помилка (res, serverError)
+		res.serverError('Failed to Join consultation', [error.message])
 	}
 })
 
@@ -239,8 +241,8 @@ router.put('/end/:id', authenticate, async (req, res) => {
 
 		res.ok(appointment, 'Consultation completed successfully')
 	} catch (error) {
-		console.error('End consultation error', error)
-		res, serverError('Failed to End consultation', [error.message])
+		console.error('End consultation error', error) // ВИПРАВЛЕННЯ: синтаксична помилка (res, serverError)
+		res.serverError('Failed to End consultation', [error.message])
 	}
 })
 
@@ -270,8 +272,8 @@ router.put(
 
 			res.ok(appointment, 'Appointment status updated successfully')
 		} catch (error) {
-			console.error('updated Appointment status error', error)
-			res, serverError('Failed to updated Appointment status', [error.message])
+			console.error('updated Appointment status error', error) // ВИПРАВЛЕННЯ: синтаксична помилка (res, serverError)
+			res.serverError('Failed to updated Appointment status', [error.message])
 		}
 	}
 )
@@ -289,9 +291,8 @@ router.get('/:id', authenticate, async (req, res) => {
 
 		if (!appointment) {
 			return res.notFound('Appointment not found')
-		}
+		} //check if user has access to this appointment
 
-		//check if user has access to this appointment
 		const userRole = req.auth.type
 		if (
 			userRole === 'doctor' &&
@@ -309,8 +310,8 @@ router.get('/:id', authenticate, async (req, res) => {
 
 		res.ok({ appointment }, 'Appointment fetched successfully')
 	} catch (error) {
-		console.error('Get appointment error', error)
-		res, serverError('Failed to Get appointment', [error.message])
+		console.error('Get appointment error', error) // ВИПРАВЛЕННЯ: синтаксична помилка (res, serverError)
+		res.serverError('Failed to Get appointment', [error.message])
 	}
 })
 

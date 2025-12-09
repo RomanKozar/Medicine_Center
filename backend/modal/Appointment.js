@@ -13,8 +13,8 @@ const appointmentSchema = new mongoose.Schema(
 			required: true,
 		},
 		date: { type: Date, required: true },
-		slotStartIso: { type: String, required: true },
-		slotEndIso: { type: String, required: true },
+		slotStartIso: { type: Date, required: true },
+		slotEndIso: { type: Date, required: true },
 
 		consultationType: {
 			type: String,
