@@ -1,7 +1,6 @@
 {
-  "/(dashboard)/patient/dashboard/page": "app/(dashboard)/patient/dashboard/page.js",
+  "/(dashboard)/doctor/appointments/page": "app/(dashboard)/doctor/appointments/page.js",
+  "/page": "app/page.js",
   "/(dashboard)/doctor/dashboard/page": "app/(dashboard)/doctor/dashboard/page.js",
-  "/doctor-list/page": "app/doctor-list/page.js",
-  "/patient/booking/[doctorId]/page": "app/patient/booking/[doctorId]/page.js",
-  "/onboarding/doctor/page": "app/onboarding/doctor/page.js"
+  "/(dashboard)/patient/dashboard/page": "app/(dashboard)/patient/dashboard/page.js"
 }

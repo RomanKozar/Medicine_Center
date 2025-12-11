@@ -218,7 +218,7 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 		set({ loading: true, error: null })
 		try {
 			const response = await putWithAuth(
-				`/appointment/status/${appointmentId}`,
+				`appointment/status/${appointmentId}`,
 				{ status }
 			)
 			set(state => ({
