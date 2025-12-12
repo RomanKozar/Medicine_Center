@@ -126,7 +126,7 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 	fetchAppointmentById: async appointmentId => {
 		set({ loading: true, error: null })
 		try {
-			const response = await getWithAuth(`/appointment/${appointmentId}`)
+			const response = await getWithAuth(`appointment/${appointmentId}`)
 			set({ currentAppointment: response?.data?.appointment })
 			return response?.data?.appointment
 		} catch (error: any) {
@@ -168,7 +168,7 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 	joinConsultation: async appointmentId => {
 		set({ loading: true, error: null })
 		try {
-			const response = await getWithAuth(`/appointment/join/${appointmentId}`)
+			const response = await getWithAuth(`appointment/join/${appointmentId}`)
 			set(state => ({
 				appointments: state.appointments.map(apt =>
 					apt._id === appointmentId
@@ -191,7 +191,7 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 	endConsultation: async (appointmentId, prescription, notes) => {
 		set({ loading: true, error: null })
 		try {
-			const response = await putWithAuth(`/appointment/end/${appointmentId}`, {
+			const response = await putWithAuth(`appointment/end/${appointmentId}`, {
 				prescription,
 				notes,
 			})

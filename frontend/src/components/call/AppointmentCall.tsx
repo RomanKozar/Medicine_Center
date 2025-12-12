@@ -21,7 +21,7 @@ const AppointmentCall = ({
 	const zpRef = useRef<any>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const initializationRef = useRef(false)
-	const isComponentMountedRef = useRef(false) //true
+	const isComponentMountedRef = useRef(true) //false
 
 	const memoizedJoinConsultation = useCallback(
 		async (appointmentId: string) => {

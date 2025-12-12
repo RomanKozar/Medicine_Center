@@ -19,8 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { getStatusColor } from '@/lib/constant'
-// import PrescriptionViewModal from '../doctor/PrescriptionViewModal'
-import PrescriptionModal from '../doctor/PrescriptionModal'
+import PrescriptionViewModal from '../doctor/PrescriptionViewModal'
 
 const PatientDashboardContent = () => {
 	const { user } = userAuthStore()
@@ -194,7 +193,7 @@ const PatientDashboardContent = () => {
 
 								{appointment.status === 'Completed' &&
 									appointment.prescription && (
-										<PrescriptionModal
+										<PrescriptionViewModal
 											appointment={appointment}
 											userType='patient'
 											trigger={
