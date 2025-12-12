@@ -3,7 +3,7 @@ const { query, body } = require('express-validator')
 const validate = require('../middleware/validate')
 const { authenticate, requireRole } = require('../middleware/auth')
 const Doctor = require('../modal/Doctor')
-// const Appointment = require('../modal/Appointment')
+const Appointment = require('../modal/Appointment')
 
 const router = express.Router()
 
@@ -139,7 +139,7 @@ router.get(
 	requireRole('doctor'),
 	async (req, res) => {
 		try {
-			const doctorId = req.id //req.auth.id
+			const doctorId = req.auth.id //req.auth.id
 			const now = new Date()
 
 			//Proper date range calculation
