@@ -382,7 +382,7 @@ const DoctorAppointmentContent = () => {
 									))}
 								</div>
 							) : (
-								<EmptyState tab='completed' />
+								<EmptyState tab='past' />
 							)}
 						</TabsContent>
 					</Tabs>
