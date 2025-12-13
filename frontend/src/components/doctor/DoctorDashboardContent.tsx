@@ -70,9 +70,9 @@ const DoctorDashboardContent = () => {
 				fetchDashboard(user.type)
 			}
 
-			// const url = new URL(window.location.href)
-			// url.searchParams.delete('completedCall')
-			// window.history.replaceState({}, '', url.pathname)
+			const url = new URL(window.location.href)
+			url.searchParams.delete('completedCall')
+			window.history.replaceState({}, '', url.pathname)
 		} catch (error) {
 			console.error('failed to complete consultation', error)
 		} finally {
