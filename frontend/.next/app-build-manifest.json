@@ -6,40 +6,25 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(dashboard)/doctor/dashboard/page": [
+    "/(dashboard)/doctor/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/doctor/dashboard/page.js"
+      "static/chunks/app/(dashboard)/doctor/profile/page.js"
     ],
-    "/(dashboard)/doctor/appointments/page": [
+    "/(dashboard)/patient/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/doctor/appointments/page.js"
-    ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
-    "/(dashboard)/patient/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/patient/dashboard/page.js"
+      "static/chunks/app/(dashboard)/patient/profile/page.js"
     ],
     "/doctor-list/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/doctor-list/page.js"
     ],
-    "/patient/booking/[doctorId]/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/patient/booking/[doctorId]/page.js"
-    ],
-    "/(dashboard)/call/[appointmentId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/call/[appointmentId]/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

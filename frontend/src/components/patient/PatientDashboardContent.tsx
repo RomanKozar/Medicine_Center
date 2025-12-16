@@ -18,7 +18,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
-import { getStatusColor } from '@/lib/constant'
+import { emptyStates, getStatusColor } from '@/lib/constant'
 import PrescriptionViewModal from '../doctor/PrescriptionViewModal'
 
 const PatientDashboardContent = () => {
@@ -213,7 +213,10 @@ const PatientDashboardContent = () => {
 							{appointment.status === 'Completed' && (
 								<div className='flex items-center space-x-1'>
 									{[...Array(5)].map((_, i) => (
-										<Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
+										<Star
+											key={i}
+											className='w-4 h-4 fill-yellow-400 text-yellow-400'
+										/>
 									))}
 								</div>
 							)}
@@ -225,21 +228,6 @@ const PatientDashboardContent = () => {
 	)
 
 	const EmptyState = ({ tab }: { tab: string }) => {
-		const emptyStates = {
-			upcoming: {
-				icon: Clock,
-				title: 'No Upcoming Appointments',
-				description: 'You have no upcoming appointments scheduled.',
-				showBookButton: true,
-			},
-			past: {
-				icon: FileText,
-				title: 'No Past Appointments',
-				description: 'Your Completed consultations will appear here.',
-				showBookButton: false,
-			},
-		}
-
 		const state = emptyStates[tab as keyof typeof emptyStates]
 		const Icon = state.icon
 		return (
@@ -251,14 +239,14 @@ const PatientDashboardContent = () => {
 					</h3>
 					<p className='text-gray-600 mb-6'>{state.description}</p>
 
-					{state.showBookButton && ( //doctors-list
+					{/* {state.showBookButton && ( //doctors-list
 						<Link href='/doctor-list'>
 							<Button>
 								<Calendar className='w-4 h-4 mr-2' />
 								Book Your First Appointment
 							</Button>
 						</Link>
-					)}
+					)} */}
 				</CardContent>
 			</Card>
 		)
@@ -368,7 +356,7 @@ const PatientDashboardContent = () => {
 									))}
 								</div>
 							) : (
-								<EmptyState tab='past' />
+								<EmptyState tab='completed' />
 							)}
 						</TabsContent>
 					</Tabs>

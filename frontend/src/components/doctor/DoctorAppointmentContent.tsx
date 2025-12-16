@@ -251,7 +251,10 @@ const DoctorAppointmentContent = () => {
 							{appointment.status === 'Completed' && (
 								<div className='flex items-center space-x-1'>
 									{[...Array(5)].map((_, i) => (
-										<Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
+										<Star
+											key={i}
+											className='w-4 h-4 fill-yellow-400 text-yellow-400'
+										/>
 									))}
 								</div>
 							)}
@@ -295,7 +298,7 @@ const DoctorAppointmentContent = () => {
 						</div>
 
 						<div className='flex items-center space-x-4 '>
-							<Link href='/dcotor/profile'>
+							<Link href='/doctor/profile'>
 								<Button>
 									<Calendar className='w-4 h-4 mr-2 ' />
 									Update Availability
@@ -382,7 +385,7 @@ const DoctorAppointmentContent = () => {
 									))}
 								</div>
 							) : (
-								<EmptyState tab='past' />
+								<EmptyState tab='completed' />
 							)}
 						</TabsContent>
 					</Tabs>
