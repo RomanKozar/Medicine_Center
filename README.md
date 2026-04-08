@@ -2,6 +2,10 @@
 
 **Medicine Center** — це сучасна веб-платформа для онлайн-медичних консультацій, яка дозволяє пацієнтам швидко знаходити лікарів, бронювати консультації та проводити відеодзвінки у безпечному середовищі.
 
+[![Full-Stack Project](https://img.shields.io/badge/Stack-Full--Stack-blueviolet.svg?style=for-the-badge)](https://github.com/RomanKozar/Medicine_Center)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Status](https://img.shields.io/badge/Status-Completed-green.svg?style=for-the-badge)](https://github.com/RomanKozar/Medicine_Center)
+
 ![Головна сторінка](preview.png)
 
 ---
