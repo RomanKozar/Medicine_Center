@@ -132,10 +132,9 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 					[child]: value,
 				},
 			}))
+		} else {
+			setFormData((prev: any) => ({ ...prev, [field]: value }))
 		}
-		// else {
-		// 	setFormData((prev: any) => ({ ...prev, [field]: value }))
-		// }
 	}
 	const handleArrayChnage = (
 		field: string,
@@ -308,7 +307,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 							disabled={!isEditing}
 						>
 							<SelectTrigger>
-								<SelectValue placeholder='Select a bood group' />
+								<SelectValue placeholder='Select a blood group' />
 							</SelectTrigger>
 							<SelectContent>
 								{['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(
@@ -445,7 +444,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Consultation Fee(₹)</Label>
+				<Label>Consultation Fee($)</Label>
 				<Input
 					type='number'
 					value={formData.fees || ''}
@@ -698,7 +697,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 	const renderEmergencySection = () => (
 		<div className='space-y-6'>
 			<div className='flex flex-col gap-2'>
-				<Label>Emerygency Contact Name</Label>
+				<Label>Emergency Contact Name</Label>
 				<Input
 					value={formData.emergencyContact?.name || ''}
 					onChange={e =>
@@ -709,7 +708,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Emerygency Contact Phone</Label>
+				<Label>Emergency Contact Phone</Label>
 				<Input
 					value={formData.emergencyContact?.phone || ''}
 					onChange={e =>

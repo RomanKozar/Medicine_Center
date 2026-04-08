@@ -62,7 +62,7 @@ export const userAuthStore = create<AuthState>()(
 			loginDoctor: async (email, password) => {
 				set({ loading: true, error: null })
 				try {
-					const response = await postWithoutAuth('/auth/doctor/login', {
+					const response = await postWithoutAuth('auth/doctor/login', {
 						email,
 						password,
 					})
@@ -78,7 +78,7 @@ export const userAuthStore = create<AuthState>()(
 			loginPatient: async (email, password) => {
 				set({ loading: true, error: null })
 				try {
-					const response = await postWithoutAuth('/auth/patient/login', {
+					const response = await postWithoutAuth('auth/patient/login', {
 						email,
 						password,
 					})
