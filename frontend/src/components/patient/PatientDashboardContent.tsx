@@ -18,7 +18,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
-import { emptyStates, getStatusColor } from '@/lib/constant'
+import {
+	emptyStates,
+	getConsultationTypeLabel,
+	getSpecializationLabel,
+	getStatusColor,
+	getStatusLabel,
+} from '@/lib/constant'
 import PrescriptionViewModal from '../doctor/PrescriptionViewModal'
 
 const PatientDashboardContent = () => {
@@ -65,7 +71,7 @@ const PatientDashboardContent = () => {
 	}, [appointments])
 
 	const formatDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString('en-US', {
+		return new Date(dateString).toLocaleDateString('uk-UA', {
 			weekday: 'long',
 			year: 'numeric',
 			month: 'long',
@@ -123,7 +129,11 @@ const PatientDashboardContent = () => {
 									{appointment.doctorId?.name}
 								</h3>
 								<p className='text-gray-600'>
-									{appointment.doctorId?.specialization}
+									{appointment.doctorId?.specialization
+										? getSpecializationLabel(
+												appointment.doctorId.specialization
+										  )
+										: ''}
 								</p>
 								<div className='flex items-center justify-center md:justify-start space-x-1 text-sm text-gray-500 mt-1'>
 									<MapPin className='w-3 h-3' />
@@ -133,11 +143,11 @@ const PatientDashboardContent = () => {
 
 							<div className='mt-2 md:mt-0 text-center md:text-right'>
 								<Badge className={getStatusColor(appointment.status)}>
-									{appointment.status}
+									{getStatusLabel(appointment.status)}
 								</Badge>
 								{isToday(appointment.slotStartIso) && (
 									<div className='text-xs text-blue-600 font-semibold mt-1'>
-										TODAY
+										СЬОГОДНІ
 									</div>
 								)}
 							</div>
@@ -156,19 +166,21 @@ const PatientDashboardContent = () => {
 									) : (
 										<Phone className='w-4 h-4' />
 									)}
-									<span>{appointment.consultationType}</span>
+									<span>
+										{getConsultationTypeLabel(appointment.consultationType)}
+									</span>
 								</div>
 							</div>
 
 							<div className='text-center md:text-left'>
 								<div className='flex justify-center gap-2 text-sm text-gray-600'>
-									<span className='font-semibold'>Fee:</span>
+									<span className='font-semibold'>Вартість:</span>
 									<p>${appointment.doctorId?.fees}</p>
 								</div>
 
 								{appointment.symptoms && (
 									<div className='flex justify-center gap-2 text-sm text-gray-600 mt-1'>
-										<span className='font-semibold'>Symptoms</span>
+										<span className='font-semibold'>Симптоми</span>
 										<p className='text-xs text-gray-500 mt-1 line-clamp-2'>
 											{appointment.symptoms}
 										</p>
@@ -186,7 +198,7 @@ const PatientDashboardContent = () => {
 											className='bg-green-600 hover:bg-green-700'
 										>
 											<Video className='w-4 h-4 mr-2' />
-											Join Call
+											Приєднатися
 										</Button>
 									</Link>
 								)}
@@ -203,7 +215,7 @@ const PatientDashboardContent = () => {
 													className='text-green-700 border-green-200 hover:bg-green-50'
 												>
 													<FileText className='w-4 h-4 mr-2' />
-													View Prescription
+													Переглянути рецепт
 												</Button>
 											}
 										/>
@@ -261,10 +273,10 @@ const PatientDashboardContent = () => {
 					<div className='flex items-center justify-between mb-8'>
 						<div>
 							<h1 className='text-md md:text-3xl font-bold text-gray-900'>
-								My Appointment
+								Мої записи
 							</h1>
 							<p className='text-xs md:text-lg text-gray-600'>
-								Manage your healthcare appointments
+								Керуйте своїми медичними візитами
 							</p>
 						</div>
 
@@ -272,7 +284,8 @@ const PatientDashboardContent = () => {
 							<Link href='/doctor-list'>
 								<Button>
 									<Calendar className='w-4 h-4 mr-2 ' />
-									Book <span className='hidden md:block'>New Appointment</span>
+									Записатися{' '}
+									<span className='hidden md:block'>на прийом</span>
 								</Button>
 							</Link>
 						</div>
@@ -289,11 +302,11 @@ const PatientDashboardContent = () => {
 								className='flex items-center space-x-2'
 							>
 								<Clock className='w-4 h-4' />
-								<span>Upcoming ({tabCounts.upcoming})</span>
+								<span>Майбутні ({tabCounts.upcoming})</span>
 							</TabsTrigger>
 							<TabsTrigger value='past' className='flex items-center space-x-2'>
 								<Calendar className='w-4 h-4' />
-								<span>Past ({tabCounts.past})</span>
+								<span>Минулі ({tabCounts.past})</span>
 							</TabsTrigger>
 						</TabsList>
 

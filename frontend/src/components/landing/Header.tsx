@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import {
 	Bell,
 	Calendar,
@@ -21,7 +21,7 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { profile } from 'console'
+import { getRoleLabel } from '@/lib/constant'
 import { userAuthStore } from '@/store/authStore'
 
 interface HeaderProps {
@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 		if (user?.type === 'patient') {
 			return [
 				{
-					lable: 'Appointments',
+					lable: 'Записи',
 					icon: Calendar,
 					href: '/patient/dashboard',
 					active: pathname?.includes('/patient/dashboard') || false,
@@ -55,13 +55,13 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 		} else if (user?.type === 'doctor') {
 			return [
 				{
-					lable: 'Dashboard',
+					lable: 'Кабінет',
 					icon: Calendar,
 					href: '/doctor/dashboard',
 					active: pathname?.includes('/doctor/dashboard') || false,
 				},
 				{
-					lable: 'Appointments',
+					lable: 'Записи',
 					icon: Calendar,
 					href: '/doctor/appointments',
 					active: pathname?.includes('/doctor/appointments') || false,
@@ -81,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 						</div>
 
 						<div className='text-2xl font-bold bg-gradient-to-br from-blue-600 to-blue-800  bg-clip-text text-transparent'>
-							MediCare+
+							HealOnline
 						</div>
 					</Link>
 
@@ -134,8 +134,8 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 										<p className='text-sm font-medium text-gray-900'>
 											{user?.name}
 										</p>
-										<p className='text-xs text-gray-500 capitalize'>
-											{user?.type}
+										<p className='text-xs text-gray-500'>
+											{user?.type ? getRoleLabel(user.type) : ''}
 										</p>
 									</div>
 								</Button>
@@ -168,7 +168,7 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 										className='flex items-center'
 									>
 										<User className='w-4 h-4 mr-2' />
-										Profile
+										Профіль
 									</Link>
 								</DropdownMenuItem>
 								<DropdownMenuSeparator />
@@ -178,7 +178,7 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 										className='flex items-center'
 									>
 										<Settings className='w-4 h-4 mr-2' />
-										Settings
+										Налаштування
 									</Link>
 								</DropdownMenuItem>
 								<DropdownMenuSeparator />
@@ -187,7 +187,7 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 									className='text-red-600'
 								>
 									<LogOut className='w-4 h-4 mr-2' />
-									Logout
+									Вийти
 								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
@@ -201,20 +201,20 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 										variant='ghost'
 										className='text-blue-900 font-medium hover:text-blue-700'
 									>
-										Log in
+										Увійти
 									</Button>
 								</Link>
 
 								<Link href='/signup/patient' className='hidden md:block'>
 									<Button className='bg-gradient-to-r from-blue-600 to-blue-700  font-medium hover:from-blue-700 hover:to-blue-800 rounded-full px-6'>
-										Book Consultation
+										Записатися на консультацію
 									</Button>
 								</Link>
 							</>
 						) : (
 							<div className='flex items-center space-x-4 '>
 								<span className='hidden md:block text-sm text-gray-700 font-medium whitespace-nowrap'>
-									Welcome,&nbsp;{user?.name}
+									Вітаємо,&nbsp;{user?.name}
 								</span>
 
 								<Link href={`/${user?.type}/dashboard`}>
@@ -222,7 +222,7 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 										variant='ghost'
 										className='text-blue-900 font-medium hover:text-blue-700'
 									>
-										Dashboard
+										Кабінет
 									</Button>
 								</Link>
 							</div>

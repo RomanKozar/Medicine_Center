@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -95,16 +95,18 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 	}
 
 	const isSignup = type === 'signup'
-	const title = isSignup ? 'Create a secure account' : 'Welcome back'
-	const buttonText = isSignup ? 'Create account' : 'Sign in'
-	const altLinkText = isSignup ? 'Already a member?' : "Don't have an account?"
-	const altLinkAction = isSignup ? 'Sign in' : 'Sign up'
+	const title = isSignup ? 'Створіть безпечний обліковий запис' : 'З поверненням'
+	const buttonText = isSignup ? 'Зареєструватися' : 'Увійти'
+	const altLinkText = isSignup
+		? 'Уже є обліковий запис?'
+		: 'Ще немає облікового запису?'
+	const altLinkAction = isSignup ? 'Увійти' : 'Зареєструватися'
 	const altLinkPath = isSignup ? `/login/${userRole}` : `/signup/${userRole}`
 
 	return (
 		<div className='w-full max-w-md mx-auto'>
 			<div className='text-center mb-8'>
-				<h1 className='text-2xl font-bold text-blue-900'>MediCare+</h1>
+				<h1 className='text-2xl font-bold text-blue-900'>HealOnline</h1>
 			</div>
 
 			<Card className='border-0 shadow-xl'>
@@ -121,7 +123,7 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 						{/* Name field for signup */}
 						{isSignup && (
 							<div className='space-y-2'>
-								<Label htmlFor='name'>Full Name</Label>
+								<Label htmlFor='name'>Повне імʼя</Label>
 								<Input
 									id='name'
 									type='text'
@@ -137,7 +139,7 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 
 						{/* Email */}
 						<div className='space-y-2'>
-							<Label htmlFor='email'>Email</Label>
+							<Label htmlFor='email'>Електронна пошта</Label>
 							<Input
 								id='email'
 								type='email'
@@ -152,7 +154,7 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 
 						{/* Password */}
 						<div className='space-y-2'>
-							<Label htmlFor='password'>Password</Label>
+							<Label htmlFor='password'>Пароль</Label>
 							<div className='relative'>
 								<Input
 									id='password'
@@ -194,15 +196,15 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 									htmlFor='terms'
 									className='text-sm text-gray-600 leading-5'
 								>
-									I confirm that I am over 18 years old and agree to MediCare+'s{' '}
+									Підтверджую, що мені виповнилося 18 років, і погоджуюся з{' '}
 									<Link href='#' className='text-blue-600 hover:underline'>
-										Terms
+										Умовами
 									</Link>{' '}
-									and{' '}
+									та{' '}
 									<Link href='#' className='text-blue-600 hover:underline'>
-										Privacy Policy
-									</Link>
-									.
+										Політикою конфіденційності
+									</Link>{' '}
+									HealOnline.
 								</label>
 							</div>
 						)}
@@ -213,7 +215,9 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 							disabled={loading || (isSignup && !agreeToTerms)}
 						>
 							{loading
-								? `${type === 'signup' ? 'Creating' : 'Signing'} in...`
+								? type === 'signup'
+									? 'Реєстрація...'
+									: 'Вхід...'
 								: buttonText}
 						</Button>
 					</form>
@@ -222,7 +226,7 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 						<div className='relative'>
 							<Separator />
 							<div className='absolute inset-0 flex justify-center'>
-								<span className='bg-white px-2 text-gray-500 text-sm'>OR</span>
+								<span className='bg-white px-2 text-gray-500 text-sm'>АБО</span>
 							</div>
 						</div>
 
@@ -251,7 +255,7 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 										d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'
 									/>
 								</svg>
-								{isSignup ? 'Sign up' : 'Sign in'} with Google
+								{isSignup ? 'Зареєструватися' : 'Увійти'} через Google
 							</Button>
 						</div>
 					</div>

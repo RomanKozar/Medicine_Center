@@ -1,9 +1,9 @@
-import AuthForm from '@/components/auth/AuthForm'
+﻿import AuthForm from '@/components/auth/AuthForm'
 
 export const metadata = {
-	title: 'Create Patient Account - MediCare+',
+	title: 'Реєстрація пацієнта | HealOnline',
 	description:
-		'Join MediCare+ to access quality healthcare consultations from certified doctors.',
+		'Приєднуйтесь до HealOnline для онлайн-консультацій із перевіреними лікарями.',
 }
 
 export default function PatientSignUpPage() {

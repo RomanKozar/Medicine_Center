@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { userAuthStore } from '@/store/authStore'
 import { Phone, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -125,10 +125,10 @@ const PatientOnboardingForm = () => {
 		<div className='w-full max-w-2xl mx-auto'>
 			<div className='text-center mb-8'>
 				<h1 className='text-3xl font-bold text-gray-900 mb-2'>
-					Welcome {user?.name} to MediCare+
+					{user?.name}, ласкаво просимо до HealOnline
 				</h1>
 				<p className='text-gray-600'>
-					Complete your profile to start booking appointment
+					Заповніть профіль, щоб записуватися на прийом
 				</p>
 			</div>
 
@@ -165,12 +165,12 @@ const PatientOnboardingForm = () => {
 						<div className='space-y-6'>
 							<div className='flex items-center space-x-2 mb-6'>
 								<User className='w-5 h-5 text-blue-600' />
-								<h2 className='text-xl font-semibold'>Basic Information</h2>
+								<h2 className='text-xl font-semibold'>Основні дані</h2>
 							</div>
 
 							<div className='grid md:grid-cols-2 gap-6'>
 								<div className='space-y-2'>
-									<Label htmlFor='phone'>Phone Number </Label>
+									<Label htmlFor='phone'>Номер телефону</Label>
 									<Input
 										id='phone'
 										name='phone'
@@ -183,7 +183,7 @@ const PatientOnboardingForm = () => {
 								</div>
 
 								<div className='space-y-2'>
-									<Label htmlFor='dob'>Date of Birth </Label>
+									<Label htmlFor='dob'>Дата народження</Label>
 									<Input
 										id='dob'
 										name='dob'
@@ -194,25 +194,25 @@ const PatientOnboardingForm = () => {
 									/>
 								</div>
 								<div className='space-y-2'>
-									<Label htmlFor='gender'>Gender</Label>
+									<Label htmlFor='gender'>Стать</Label>
 									<Select
 										value={formData.gender}
 										onValueChange={value => handleSelectChange('gender', value)}
 									>
 										<SelectTrigger>
-											<SelectValue placeholder='Select gender'></SelectValue>
+											<SelectValue placeholder='Оберіть стать'></SelectValue>
 										</SelectTrigger>
 
 										<SelectContent>
-											<SelectItem value='male'>Male</SelectItem>
-											<SelectItem value='female'>Female</SelectItem>
-											<SelectItem value='other'>Other</SelectItem>
+											<SelectItem value='male'>Чоловіча</SelectItem>
+											<SelectItem value='female'>Жіноча</SelectItem>
+											<SelectItem value='other'>Інше</SelectItem>
 										</SelectContent>
 									</Select>
 								</div>
 
 								<div className='space-y-2'>
-									<Label htmlFor='bloodGroup'>Blood Group</Label>
+									<Label htmlFor='bloodGroup'>Група крові</Label>
 									<Select
 										value={formData.bloodGroup}
 										onValueChange={value =>
@@ -220,7 +220,7 @@ const PatientOnboardingForm = () => {
 										}
 									>
 										<SelectTrigger>
-											<SelectValue placeholder='Select blood group'></SelectValue>
+											<SelectValue placeholder='Оберіть групу крові'></SelectValue>
 										</SelectTrigger>
 
 										<SelectContent>
@@ -243,30 +243,30 @@ const PatientOnboardingForm = () => {
 						<div className='space-y-6'>
 							<div className='flex items-center space-x-2 mb-6'>
 								<Phone className='w-5 h-5 text-blue-600' />
-								<h2 className='text-xl font-semibold'>Emergency Contact</h2>
+								<h2 className='text-xl font-semibold'>Екстрений контакт</h2>
 							</div>
 							<Alert>
 								<AlertDescription>
-									This information will be used to contact someone on your
-									behalf in case of emergency during consultations.
+									Ці дані допоможуть звʼязатися з близькою людиною у разі
+									надзвичайної ситуації під час консультації.
 								</AlertDescription>
 							</Alert>
 							<div className='grid md:grid-cols-2 gap-6'>
 								<div className='space-y-2 md:col-span-2'>
-									<Label htmlFor='emergencyName'>Contact Name</Label>
+									<Label htmlFor='emergencyName'>Імʼя контактної особи</Label>
 									<Input
 										id='emergencyName'
 										value={formData.emergencyContact.name}
 										onChange={(e: ChangeEvent<HTMLInputElement>) =>
 											handleEmergencyContactChnage('name', e.target.value)
 										}
-										placeholder='Full name'
+										placeholder="Повне імʼя"
 										required
 									/>
 								</div>
 
 								<div className='space-y-2 md:col-span-2'>
-									<Label htmlFor='emergencyPhone'>Contact Phone</Label>
+									<Label htmlFor='emergencyPhone'>Телефон контакту</Label>
 									<Input
 										id='emergencyPhone'
 										value={formData.emergencyContact.phone}
@@ -279,7 +279,7 @@ const PatientOnboardingForm = () => {
 								</div>
 
 								<div className='space-y-2'>
-									<Label htmlFor='relationship'>Relationship</Label>
+									<Label htmlFor='relationship'>Стосунки</Label>
 									<Select
 										value={formData.emergencyContact.relationship}
 										onValueChange={value =>
@@ -287,17 +287,17 @@ const PatientOnboardingForm = () => {
 										}
 									>
 										<SelectTrigger>
-											<SelectValue placeholder='Select relationship'></SelectValue>
+											<SelectValue placeholder='Оберіть стосунки'></SelectValue>
 										</SelectTrigger>
 
 										<SelectContent>
-											<SelectItem value='spouse'>Spouse</SelectItem>
-											<SelectItem value='parent'>Parent</SelectItem>
-											<SelectItem value='child'>Child</SelectItem>
-											<SelectItem value='sibling'>Sibling</SelectItem>
-											<SelectItem value='friend'>Friend</SelectItem>
-											<SelectItem value='relative'>Relative</SelectItem>
-											<SelectItem value='other'>Other</SelectItem>
+											<SelectItem value='spouse'>Подружжя</SelectItem>
+											<SelectItem value='parent'>Батько / мати</SelectItem>
+											<SelectItem value='child'>Дитина</SelectItem>
+											<SelectItem value='sibling'>Брат / сестра</SelectItem>
+											<SelectItem value='friend'>Друг</SelectItem>
+											<SelectItem value='relative'>Родич</SelectItem>
+											<SelectItem value='other'>Інше</SelectItem>
 										</SelectContent>
 									</Select>
 								</div>
@@ -309,31 +309,31 @@ const PatientOnboardingForm = () => {
 						<div className='space-y-6'>
 							<div className='flex items-center space-x-2 mb-6'>
 								<Phone className='w-5 h-5 text-blue-600' />
-								<h2 className='text-xl font-semibold'>Medical Infomation</h2>
+								<h2 className='text-xl font-semibold'>Медичні дані</h2>
 							</div>
 							<Alert>
 								<AlertDescription>
-									This information helps doctors provide better care. All
-									information is kept confidential and secure
+									Ці відомості допомагають лікарям надавати кращу допомогу. Усі
+									дані конфіденційні та захищені
 								</AlertDescription>
 							</Alert>
 							<div className='space-y-6'>
 								<div className='space-y-2'>
-									<Label htmlFor='allergies'>Known Allergies</Label>
+									<Label htmlFor='allergies'>Відомі алергії</Label>
 									<Textarea
 										id='allergies'
 										value={formData.medicalHistory.allergies}
 										onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
 											handleMedicalHistoryChnage('allergies', e.target.value)
 										}
-										placeholder="e.g., Penicillin, Peanuts, Dust (or write 'None' if no known allergies"
+										placeholder="напр., пеніцилін, арахіс, пил (або «немає»)"
 										rows={3}
 									/>
 								</div>
 
 								<div className='space-y-2'>
 									<Label htmlFor='currentMedications'>
-										Current Medications
+										Поточні препарати
 									</Label>
 									<Textarea
 										id='currentMedications'
@@ -344,13 +344,13 @@ const PatientOnboardingForm = () => {
 												e.target.value
 											)
 										}
-										placeholder="List any medications you're currently taking (or write 'None' if not taking any)"
+										placeholder="Перелік препаратів, які приймаєте (або «немає»)"
 										rows={3}
 									/>
 								</div>
 
 								<div className='space-y-2'>
-									<Label htmlFor='chronicConditions'>Known Allergies</Label>
+									<Label htmlFor='chronicConditions'>Хронічні захворювання</Label>
 									<Textarea
 										id='chronicConditions'
 										value={formData.medicalHistory.chronicConditions}
@@ -360,7 +360,7 @@ const PatientOnboardingForm = () => {
 												e.target.value
 											)
 										}
-										placeholder="e.g., Diabetes, Hypertension, Asthma (or write 'None' if no chronic conditions)"
+										placeholder="напр., діабет, гіпертонія, астма (або «немає»)"
 										rows={3}
 									/>
 								</div>
@@ -375,7 +375,7 @@ const PatientOnboardingForm = () => {
 							onClick={handlePrevious}
 							disabled={currentStep === 1}
 						>
-							Previous
+							Назад
 						</Button>
 
 						{currentStep < 3 ? (
@@ -395,7 +395,7 @@ const PatientOnboardingForm = () => {
 											!formData.medicalHistory.currentMedications))
 								}
 							>
-								Next
+								Далі
 							</Button>
 						) : (
 							<Button
@@ -404,7 +404,7 @@ const PatientOnboardingForm = () => {
 								disabled={loading}
 								className='bg-green-600 hover:bg-green-700'
 							>
-								{loading ? 'Completing Setup...' : 'Complete Profile'}
+								{loading ? 'Завершення...' : 'Завершити профіль'}
 							</Button>
 						)}
 					</div>

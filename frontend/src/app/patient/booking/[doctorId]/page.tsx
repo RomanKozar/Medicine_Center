@@ -120,7 +120,7 @@ const page = () => {
 
 	const handleBooking = async () => {
 		if (!selectedDate || !selectedSlot || !symptoms.trim()) {
-			alert('please complete all required fields')
+			alert('Будь ласка, заповніть усі обовʼязкові поля')
 			return
 		}
 
@@ -152,7 +152,7 @@ const page = () => {
 			//store appointemnt Id and patinet name for paymnet
 			if (appointment && appointment?._id) {
 				setCreatedAppointmentId(appointment._id)
-				setPatientName(appointment.patientId.name || 'Patient')
+				setPatientName(appointment.patientId.name || 'Пацієнт')
 			} else {
 				await new Promise(resolve => setTimeout(resolve, 3000))
 				router.push('/patient/dashboard')
@@ -178,7 +178,7 @@ const page = () => {
 			<div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center'>
 				<div className='text-center'>
 					<div className='w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4'></div>
-					<p className='text-gray-600'>Loading doctor information...</p>
+					<p className='text-gray-600'>Завантаження даних лікаря...</p>
 				</div>
 			</div>
 		)
@@ -195,16 +195,16 @@ const page = () => {
 							<Link href='/doctor-list'>
 								<Button variant='ghost' size='sm' className='text-gray-600'>
 									<ArrowLeft className='w-4 h-4 mr-2' />
-									Back to Doctors
+									До списку лікарів
 								</Button>
 							</Link>
 							<div className='h-6 w-px bg-gray-200'></div>
 							<div>
 								<h1 className='text-sm md:text-2xl font-bold text-gray-900'>
-									Book Appointment
+									Запис на прийом
 								</h1>
 								<p className='text-xs md:text-sm text-gray-600'>
-									with {currentDoctor.name}
+									до лікаря {currentDoctor.name}
 								</p>
 							</div>
 						</div>
@@ -237,10 +237,10 @@ const page = () => {
 
 										<span className='text-sm font-medium'>
 											{step === 1
-												? 'Select Time'
+												? 'Час'
 												: step === 2
-												? 'Deatils'
-												: 'Payment'}
+												? 'Деталі'
+												: 'Оплата'}
 										</span>
 									</div>
 									{step < 3 && <div className='w-12 h-px bg-gray-300'></div>}

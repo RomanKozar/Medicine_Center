@@ -1,3 +1,4 @@
+import { getConsultationTypeLabel } from '@/lib/constant'
 import React, { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -93,61 +94,65 @@ const PayementStep = ({
 		<div className='space-y-8'>
 			<div>
 				<h3 className='text-2xl font-bold text-gray-900 mb-6'>
-					Payment & Confirmation
+					Оплата та підтвердження
 				</h3>
 
 				{/* Mock Payment Warning */}
 				<div className='flex items-center space-x-3 p-4 bg-yellow-50 rounded-lg mb-6 border border-yellow-200'>
 					<Shield className='w-6 h-6 text-yellow-600' />
 					<div>
-						<p className='font-medium text-yellow-800'>Test Mode</p>
+						<p className='font-medium text-yellow-800'>Тестовий режим</p>
 						<p className='text-sm text-yellow-700'>
-							This is a simulated payment for testing purposes
+							Це імітація оплати для тестування
 						</p>
 					</div>
 				</div>
 
 				<div className='bg-gray-50 rounded-lg p-6 mb-8'>
-					<h4 className='font-semibold text-gray-900 mb-4'>Booking Summary</h4>
+					<h4 className='font-semibold text-gray-900 mb-4'>
+						Підсумок запису
+					</h4>
 					<div className='space-y-3'>
 						<div className='flex justify-between'>
-							<span className='text-gray-600'>Date & Time</span>
+							<span className='text-gray-600'>Дата й час</span>
 							<span className='font-medium'>
-								{selectedDate?.toLocaleDateString()} at {selectedSlot}
+								{selectedDate?.toLocaleDateString('uk-UA')} о {selectedSlot}
 							</span>
 						</div>
 
 						<div className='flex justify-between'>
-							<span className='text-gray-600'>Consultation Type</span>
-							<span className='font-medium'>{consultationType}</span>
+							<span className='text-gray-600'>Тип консультації</span>
+							<span className='font-medium'>
+								{getConsultationTypeLabel(consultationType)}
+							</span>
 						</div>
 
 						<div className='flex justify-between'>
-							<span className='text-gray-600'>Doctor</span>
+							<span className='text-gray-600'>Лікар</span>
 							<span className='font-medium'>{doctorName}</span>
 						</div>
 
 						<div className='flex justify-between'>
-							<span className='text-gray-600'>Duration</span>
-							<span className='font-medium'>{slotDuration} minutes</span>
+							<span className='text-gray-600'>Тривалість</span>
+							<span className='font-medium'>{slotDuration} хв</span>
 						</div>
 
 						<Separator />
 
 						<div className='flex justify-between'>
-							<span className='text-gray-600'>Consultation Fee</span>
+							<span className='text-gray-600'>Вартість консультації</span>
 							<span className='font-medium'>${consultationFee}</span>
 						</div>
 
 						<div className='flex justify-between'>
-							<span className='text-gray-600'>Platform Fee</span>
+							<span className='text-gray-600'>Комісія платформи</span>
 							<span className='font-medium'>${platformFees}</span>
 						</div>
 
 						<Separator />
 
 						<div className='flex justify-between text-lg'>
-							<span className='font-semibold'>Total Amount</span>
+							<span className='font-semibold'>Разом</span>
 							<span className='font-bold text-green-600'>${totalAmount}</span>
 						</div>
 					</div>
@@ -164,10 +169,10 @@ const PayementStep = ({
 						>
 							<Loader2 className='w-12 h-12 mx-auto mb-4 text-blue-600 animate-spin' />
 							<h4 className='text-lg font-semibold text-gray-900 mb-2'>
-								Processing Payment...
+								Обробка оплати...
 							</h4>
 							<p className='text-gray-600 mb-4'>
-								Simulating payment processing (this is a test)
+								Імітація обробки платежу (тестовий режим)
 							</p>
 							<div className='w-full bg-gray-200 rounded-full h-2 overflow-hidden'>
 								<motion.div
@@ -190,13 +195,13 @@ const PayementStep = ({
 						>
 							<CheckCircle className='w-16 h-16 mx-auto mb-4 text-green-600' />
 							<h4 className='text-lg font-semibold text-green-800 mb-2'>
-								Payment Successful!
+								Оплату успішно прийнято!
 							</h4>
 							<p className='text-gray-600 mb-4'>
-								Your appointment has been confirmed
+								Ваш запис підтверджено
 							</p>
 							<p className='text-sm text-gray-500'>
-								Redirecting to dashboard...
+								Перенаправлення до кабінету...
 							</p>
 						</motion.div>
 					)}
@@ -211,10 +216,10 @@ const PayementStep = ({
 						>
 							<XCircle className='w-16 h-16 mx-auto mb-4 text-red-600' />
 							<h4 className='text-lg font-semibold text-red-800 mb-2'>
-								Payment Failed!
+								Оплату не вдалося виконати
 							</h4>
 							<p className='text-gray-600 mb-4'>
-								The payment was not successful. Please try again.
+								Спробуйте ще раз.
 							</p>
 							<Button
 								onClick={() => {
@@ -223,7 +228,7 @@ const PayementStep = ({
 								variant='outline'
 								className='text-red-600 border-red-600 hover:bg-red-50'
 							>
-								Try Again
+								Спробувати знову
 							</Button>
 						</motion.div>
 					)}
@@ -233,9 +238,9 @@ const PayementStep = ({
 					<div className='flex items-center space-x-3 p-4 bg-green-50 rounded-lg mb-8'>
 						<Shield className='w-6 h-6 text-green-600' />
 						<div>
-							<p className='font-medium text-green-800'>Secure Payment</p>
+							<p className='font-medium text-green-800'>Безпечна оплата</p>
 							<p className='text-sm text-green-700'>
-								Your payment is protected by 256-bit SSL encryption
+								Платіж захищено шифруванням SSL 256-bit
 							</p>
 						</div>
 					</div>
@@ -245,7 +250,7 @@ const PayementStep = ({
 			{paymentStatus === 'idle' && (
 				<div className='flex justify-between gap-2'>
 					<Button variant='outline' onClick={onBack} className='px-8 py-3'>
-						Back
+						Назад
 					</Button>
 					<Button
 						onClick={handlePaynow}
@@ -256,19 +261,19 @@ const PayementStep = ({
 							<>
 								<Loader2 className='w-5 h-5 mr-2 animate-spin' />
 								<span className='text-sm md:text-lg'>
-									Creating Appointment...
+									Створення запису...
 								</span>
 							</>
 						) : isPaymentLoading ? (
 							<>
 								<Loader2 className='w-5 h-5 mr-2 animate-spin' />
-								<span className='text-sm md:text-lg'>Processing...</span>
+								<span className='text-sm md:text-lg'>Обробка...</span>
 							</>
 						) : (
 							<>
 								<CreditCard className='w-5 h-5 mr-2' />
 								<span className='text-sm md:text-lg'>
-									Pay ${totalAmount} & Book (TEST)
+									Сплатити ${totalAmount} і записатися (ТЕСТ)
 								</span>
 							</>
 						)}

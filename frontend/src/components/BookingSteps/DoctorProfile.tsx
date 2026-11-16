@@ -1,3 +1,4 @@
+import { getCategoryLabel, getSpecializationLabel } from '@/lib/constant'
 import { Doctor } from '@/lib/types'
 import React from 'react'
 import { Card, CardContent } from '../ui/card'
@@ -26,10 +27,12 @@ const DoctorProfile = ({ doctor }: DoctorPrfileInterface) => {
 					<h2 className='text-2xl font-bold text-gray-900 mb-2'>
 						{doctor.name}
 					</h2>
-					<p className='text-gray-600 mb-1'>{doctor.specialization}</p>
+					<p className='text-gray-600 mb-1'>
+						{getSpecializationLabel(doctor.specialization)}
+					</p>
 					<p className='text-sm text-gray-500 mb-2'>{doctor.qualification}</p>
 					<p className='text-sm text-gray-500 mb-4'>
-						{doctor.experience} years experience
+						{doctor.experience} років досвіду
 					</p>
 
 					<div className='flex items-center justify-center space-x-4 mb-6'>
@@ -44,7 +47,7 @@ const DoctorProfile = ({ doctor }: DoctorPrfileInterface) => {
 							</div>
 							<span className='text-sm font-semibold text-gray-700'>5.0</span>
 						</div>
-						<div className='text-sm text-gray-500'>New Doctor</div>
+						<div className='text-sm text-gray-500'>Новий лікар</div>
 					</div>
 
 					<div className='flex justify-center flex-wrap gap-2 mb-6'>
@@ -54,7 +57,7 @@ const DoctorProfile = ({ doctor }: DoctorPrfileInterface) => {
 								className='bg-green-100 text-green-800'
 							>
 								<Award className='w-3 h-3 mr-1' />
-								Verified
+								Перевірено
 							</Badge>
 						)}
 
@@ -64,7 +67,7 @@ const DoctorProfile = ({ doctor }: DoctorPrfileInterface) => {
 								variant='secondary'
 								className='bg-blue-100 text-blue-800'
 							>
-								{cat}
+								{getCategoryLabel(cat)}
 							</Badge>
 						))}
 					</div>
@@ -72,14 +75,14 @@ const DoctorProfile = ({ doctor }: DoctorPrfileInterface) => {
 
 				<div className='space-x-4'>
 					<div className='bg-gray-50 p-4 rounded-lg'>
-						<h3 className='font-semibold text-gray-900 mb-2'>About</h3>
+						<h3 className='font-semibold text-gray-900 mb-2'>Про лікаря</h3>
 						<p className='text-sm text-gray-600'>{doctor.about}</p>
 					</div>
 
 					{doctor.hospitalInfo && (
 						<div className='bf-gray-50 p-4 rounded-lg'>
 							<h3 className='font-semibold text-gray-900 mb-2'>
-								Hospital/Clinic
+								Лікарня / клініка
 							</h3>
 							<div className='text-sm text-gray-600'>
 								<p className='font-medium'>{doctor.hospitalInfo.name}</p>
@@ -95,13 +98,13 @@ const DoctorProfile = ({ doctor }: DoctorPrfileInterface) => {
 					<div className='flex items-center justify-between p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg'>
 						<div>
 							<p className='text-sm text-green-700 font-medium'>
-								Consultation Fee
+								Вартість консультації
 							</p>
 							<p className='text-2xl text-green-800 font-bold'>
 								${doctor.fees}
 							</p>
 							<p className='text-xs text-green-600 '>
-								{doctor.slotDurationMinutes} minutes session
+								Сеанс {doctor.slotDurationMinutes} хв
 							</p>
 						</div>
 						<div className='text-green-600'>

@@ -12,7 +12,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '../ui/select'
-import { healthcareCategoriesList, specializations } from '@/lib/constant'
+import {
+	getCategoryLabel,
+	getSpecializationLabel,
+	healthcareCategoriesList,
+	specializations,
+} from '@/lib/constant'
 import { Input } from '../ui/input'
 import { Checkbox } from '../ui/checkbox'
 import { Button } from '../ui/button'
@@ -120,11 +125,11 @@ const DoctorOnboardingForm = () => {
 					{currentStep === 1 && (
 						<div className='space-y-6'>
 							<h2 className='text-xl font-semibold mb-4'>
-								Professional Information
+								Професійні дані
 							</h2>
 							<div className='grid md:grid-cols-2 gap-6'>
 								<div className='space-y-2'>
-									<Label htmlFor='specialization'>Medical Specialization</Label>
+									<Label htmlFor='specialization'>Медична спеціалізація</Label>
 
 									<Select
 										value={formData.specialization}
@@ -136,12 +141,12 @@ const DoctorOnboardingForm = () => {
 										}
 									>
 										<SelectTrigger>
-											<SelectValue placeholder='Select specialization'></SelectValue>
+											<SelectValue placeholder='Оберіть спеціалізацію'></SelectValue>
 										</SelectTrigger>
 										<SelectContent>
 											{specializations.map((spec: string) => (
 												<SelectItem key={spec} value={spec}>
-													{spec}
+													{getSpecializationLabel(spec)}
 												</SelectItem>
 											))}
 										</SelectContent>
@@ -149,13 +154,13 @@ const DoctorOnboardingForm = () => {
 								</div>
 
 								<div className='space-y-2'>
-									<Label htmlFor='experience'>Years of Experience </Label>
+									<Label htmlFor='experience'>Років досвіду</Label>
 									<Input
 										id='experience'
 										name='experience'
 										type='number'
 										value={formData.experience}
-										placeholder='e.g., 5'
+										placeholder='напр., 5'
 										onChange={handleInputChnage}
 										required
 									/>
@@ -163,10 +168,9 @@ const DoctorOnboardingForm = () => {
 							</div>
 
 							<div className='space-y-3'>
-								<Label>Healthcare Categories</Label>
+								<Label>Категорії медичної допомоги</Label>
 								<p className='text-sm text-gray-600'>
-									Select the healthcare areas you provide services for (Select
-									at least one)
+									Оберіть напрямки, у яких ви надаєте послуги (мінімум одну)
 								</p>
 
 								<div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
@@ -181,46 +185,46 @@ const DoctorOnboardingForm = () => {
 												htmlFor={category}
 												className='text-sm font-medium cursor-pointer hover:text-blue-600'
 											>
-												{category}
+												{getCategoryLabel(category)}
 											</label>
 										</div>
 									))}
 								</div>
 								{formData.categories.length === 0 && (
 									<p className='text-red-500 text-xs'>
-										Please select at least one category
+										Оберіть принаймні одну категорію
 									</p>
 								)}
 							</div>
 
 							<div className='space-y-2'>
-								<Label htmlFor='qualification'>Qualification </Label>
+								<Label htmlFor='qualification'>Кваліфікація</Label>
 								<Input
 									id='qualification'
 									name='qualification'
 									type='text'
 									value={formData.qualification}
-									placeholder='e.g., MBBS, MD Cardiology'
+									placeholder='напр., диплом лікаря, спеціалізація'
 									onChange={handleInputChnage}
 									required
 								/>
 							</div>
 
 							<div className='space-y-2'>
-								<Label htmlFor='about'>About You </Label>
+								<Label htmlFor='about'>Про себе</Label>
 								<Input
 									id='about'
 									name='about'
 									type='text'
 									value={formData.about}
-									placeholder='Tell patient about your expertise and approach to healthcare...'
+									placeholder='Розкажіть пацієнтам про ваш досвід і підхід до лікування...'
 									onChange={handleInputChnage}
 									required
 								/>
 							</div>
 
 							<div className='space-y-2'>
-								<Label htmlFor='fees'>Consultations Fee ($) </Label>
+								<Label htmlFor='fees'>Вартість консультації ($)</Label>
 								<Input
 									id='fees'
 									name='fees'
@@ -237,17 +241,17 @@ const DoctorOnboardingForm = () => {
 					{currentStep === 2 && (
 						<div className='space-y-6'>
 							<h2 className='text-xl font-semibold mb-4'>
-								Hospital/Clinic Infomation
+								Дані лікарні / клініки
 							</h2>
 
 							<div className='grid md:grid-cols-2 gap-6'>
 								<div className='space-y-2 md:col-span-2'>
-									<Label htmlFor='hospitalName'>Hospital/Clinic Name</Label>
+									<Label htmlFor='hospitalName'>Назва лікарні / клініки</Label>
 									<Input
 										id='hospitalName'
 										type='text'
 										value={formData.hospitalInfo.name}
-										placeholder='e.g., Apollo Hospital'
+										placeholder='напр., Київська міська лікарня'
 										onChange={(e: ChangeEvent<HTMLInputElement>) =>
 											handleHospitalInfoChnage('name', e.target.value)
 										}
@@ -256,11 +260,11 @@ const DoctorOnboardingForm = () => {
 								</div>
 
 								<div className='space-y-2 md:col-span-2'>
-									<Label htmlFor='address'>Address</Label>
+									<Label htmlFor='address'>Адреса</Label>
 									<Textarea
 										id='address'
 										value={formData.hospitalInfo.address}
-										placeholder='Full address of your practice'
+										placeholder='Повна адреса прийому'
 										onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
 											handleHospitalInfoChnage('address', e.target.value)
 										}
@@ -270,12 +274,12 @@ const DoctorOnboardingForm = () => {
 								</div>
 
 								<div className='space-y-2 '>
-									<Label htmlFor='city'>City</Label>
+									<Label htmlFor='city'>Місто</Label>
 									<Input
 										id='city'
 										type='text'
 										value={formData.hospitalInfo.city}
-										placeholder='e.g., Mumbai'
+										placeholder='напр., Київ'
 										onChange={(e: ChangeEvent<HTMLInputElement>) =>
 											handleHospitalInfoChnage('city', e.target.value)
 										}
@@ -289,11 +293,11 @@ const DoctorOnboardingForm = () => {
 					{currentStep === 3 && (
 						<div className='space-y-6'>
 							<h2 className='text-xl font-semibold mb-4'>
-								Availability Settings
+								Налаштування доступності
 							</h2>
 							<div className='grid md:grid-cols-2 gap-6'>
 								<div className='space-y-2'>
-									<Label htmlFor='startDate'>Available From</Label>
+									<Label htmlFor='startDate'>Доступний із</Label>
 									<Input
 										id='startDate'
 										type='date'
@@ -312,7 +316,7 @@ const DoctorOnboardingForm = () => {
 								</div>
 
 								<div className='space-y-2'>
-									<Label htmlFor='endDate'>Available Until</Label>
+									<Label htmlFor='endDate'>Доступний до</Label>
 									<Input
 										id='endDate'
 										type='date'
@@ -332,7 +336,7 @@ const DoctorOnboardingForm = () => {
 							</div>
 
 							<div className='space-y-2'>
-								<Label>Appointment Slot Duration</Label>
+								<Label>Тривалість слота прийому</Label>
 								<Select
 									value={formData.slotDurationMinutes?.toString() || '30'}
 									onValueChange={(value: string) =>
@@ -343,37 +347,37 @@ const DoctorOnboardingForm = () => {
 									}
 								>
 									<SelectTrigger>
-										<SelectValue placeholder='Select slot duration'></SelectValue>
+										<SelectValue placeholder='Оберіть тривалість'></SelectValue>
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value='15'>15 minutes</SelectItem>
-										<SelectItem value='20'>20 minutes</SelectItem>
-										<SelectItem value='30'>30 minutes</SelectItem>
-										<SelectItem value='45'>45 minutes</SelectItem>
-										<SelectItem value='60'>60 minutes</SelectItem>
-										<SelectItem value='90'>90 minutes</SelectItem>
-										<SelectItem value='120'>120 minutes</SelectItem>
+										<SelectItem value='15'>15 хв</SelectItem>
+										<SelectItem value='20'>20 хв</SelectItem>
+										<SelectItem value='30'>30 хв</SelectItem>
+										<SelectItem value='45'>45 хв</SelectItem>
+										<SelectItem value='60'>60 хв</SelectItem>
+										<SelectItem value='90'>90 хв</SelectItem>
+										<SelectItem value='120'>120 хв</SelectItem>
 									</SelectContent>
 								</Select>
 								<p className='text-sm text-gray-600'>
-									Duration for each patient consultation slot
+									Тривалість одного слота консультації
 								</p>
 							</div>
 							<div className='space-y-3'>
-								<Label>Working Days</Label>
+								<Label>Робочі дні</Label>
 								<p className='text-sm text-gray-600'>
-									Select the days you are NOT available
+									Позначте дні, коли ви недоступні
 								</p>
 
 								<div className='grid grid-cols-4 md:grid-cols-7 gap-2'>
 									{[
-										{ day: 'Sunday', value: 0 },
-										{ day: 'Monday', value: 1 },
-										{ day: 'Tuesday', value: 2 },
-										{ day: 'Wednesday', value: 3 },
-										{ day: 'Thursday', value: 4 },
-										{ day: 'Friday', value: 5 },
-										{ day: 'Saturday', value: 6 },
+										{ day: 'Нд', value: 0 },
+										{ day: 'Пн', value: 1 },
+										{ day: 'Вт', value: 2 },
+										{ day: 'Ср', value: 3 },
+										{ day: 'Чт', value: 4 },
+										{ day: 'Пт', value: 5 },
+										{ day: 'Сб', value: 6 },
 									].map(({ day, value }) => (
 										<div key={value} className='flex items-center space-x-2'>
 											<Checkbox
@@ -411,16 +415,16 @@ const DoctorOnboardingForm = () => {
 												htmlFor={`day-${value}`}
 												className='text-sm font-medium cursor-pointer'
 											>
-												{day.slice(0, 3)}
+												{day}
 											</label>
 										</div>
 									))}
 								</div>
 							</div>
 							<div className='space-y-4'>
-								<Label>Daily Working Hours</Label>
+								<Label>Щоденний графік</Label>
 								<p className='text-sm text-gray-600'>
-									Set your working hours for each day
+									Вкажіть години роботи на кожен день
 								</p>
 
 								{formData.dailyTimeRanges.map((range, index) => (
@@ -430,7 +434,7 @@ const DoctorOnboardingForm = () => {
 									>
 										<div className='flex-1'>
 											<Label className='text-sm'>
-												Session {index + 1} - Start time
+												Сеанс {index + 1} - початок
 											</Label>
 											<Input
 												type='time'
@@ -449,7 +453,7 @@ const DoctorOnboardingForm = () => {
 
 										<div className='flex-1'>
 											<Label className='text-sm'>
-												Session {index + 1} - End time
+												Сеанс {index + 1} - кінець
 											</Label>
 											<Input
 												type='time'
@@ -482,7 +486,7 @@ const DoctorOnboardingForm = () => {
 												}}
 												className='text-red-600 hover:text-red-700'
 											>
-												Remove
+												Видалити
 											</Button>
 										)}
 									</div>
@@ -503,7 +507,7 @@ const DoctorOnboardingForm = () => {
 									}}
 									className='w-full'
 								>
-									+ Add Another Time Session
+									+ Додати ще один інтервал
 								</Button>
 							</div>
 						</div>
@@ -515,7 +519,7 @@ const DoctorOnboardingForm = () => {
 							onClick={handlePrevious}
 							disabled={currentStep === 1}
 						>
-							Previous
+							Назад
 						</Button>
 
 						{currentStep < 3 ? (
@@ -524,7 +528,7 @@ const DoctorOnboardingForm = () => {
 								onClick={handleNext}
 								disabled={currentStep === 1 && formData.categories.length === 0}
 							>
-								Next
+								Далі
 							</Button>
 						) : (
 							<Button
@@ -533,7 +537,7 @@ const DoctorOnboardingForm = () => {
 								disabled={loading}
 								className='bg-green-600 hover:bg-green-700'
 							>
-								{loading ? 'Completing Setup...' : 'Complete Profile'}
+								{loading ? 'Завершення...' : 'Завершити профіль'}
 							</Button>
 						)}
 					</div>

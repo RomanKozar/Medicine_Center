@@ -1,4 +1,4 @@
-import { consultationTypes } from '@/lib/constant'
+import { consultationTypes, getConsultationTypeLabel } from '@/lib/constant'
 import React from 'react'
 import { Label } from '../ui/label'
 import { Icon } from 'lucide-react'
@@ -37,11 +37,11 @@ const ConsultationStep = ({
 		<div className='space-y-8'>
 			<div>
 				<h3 className='text-2xl font-bold text-gray-900 mb-6'>
-					Consultation Details
+					Деталі консультації
 				</h3>
 				<div className='mb-8'>
 					<Label className='text-base font-semibold mb-4 block'>
-						Select Consultation Type
+						Оберіть тип консультації
 					</Label>
 					<div className='space-y-3'>
 						{consultationTypes.map(
@@ -60,7 +60,7 @@ const ConsultationStep = ({
 									>
 										{recommended && (
 											<Badge className='absolute -top-2 left-4 bg-green-500'>
-												Recommended
+												Рекомендовано
 											</Badge>
 										)}
 										<div className='flex items-center space-x-4'>
@@ -76,7 +76,9 @@ const ConsultationStep = ({
 												/>
 											</div>
 											<div className='flex-1'>
-												<h4 className='font-semibold text-gray-900'>{type}</h4>
+												<h4 className='font-semibold text-gray-900'>
+													{getConsultationTypeLabel(type)}
+												</h4>
 												<p className='text-sm text-gray-600'>{description}</p>
 											</div>
 											<div className='text-right'>
@@ -85,7 +87,7 @@ const ConsultationStep = ({
 												</p>
 												{price !== 0 && (
 													<p className='text-sm text-green-600'>
-														Save ${Math.abs(price)}
+														Економія ${Math.abs(price)}
 													</p>
 												)}
 											</div>
@@ -100,10 +102,11 @@ const ConsultationStep = ({
 				<div className='mb-8 p-4 bg-blue-50 rounded-lg'>
 					<div className='flex justify-between items-center'>
 						<span className='font-semibold text-blue-900'>
-							Selected Consultation:
+							Обрана консультація:
 						</span>
 						<span className='text-lg font-bold text-blue-900'>
-							{consultationType} - ${getConsultationPrice()}
+							{getConsultationTypeLabel(consultationType)} - $
+							{getConsultationPrice()}
 						</span>
 					</div>
 				</div>
@@ -113,11 +116,11 @@ const ConsultationStep = ({
 						htmlFor='symptoms'
 						className='text-base font-semibold mb-4 block'
 					>
-						Describe your symptoms or concerns *
+						Опишіть симптоми або занепокоєння *
 					</Label>
 					<Textarea
 						id='symptoms'
-						placeholder='Please describe what brings you to see the doctor today...'
+						placeholder='Опишіть, з чим звертаєтесь до лікаря сьогодні...'
 						value={symptoms}
 						onChange={e => setSymptoms(e.target.value)}
 						rows={5}
@@ -128,14 +131,14 @@ const ConsultationStep = ({
 
 			<div className='flex justify-between gap-2'>
 				<Button variant='outline' onClick={onBack} className='PX-8 PY-3'>
-					Back
+					Назад
 				</Button>
 				<Button
 					onClick={onContinue}
 					disabled={!symptoms.trim()}
 					className='px-7 py-3 bg-blue-600 hover:bg-blue-700'
 				>
-					Continue to Payment
+					Перейти до оплати
 				</Button>
 			</div>
 		</div>

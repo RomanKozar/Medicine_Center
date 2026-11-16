@@ -1,5 +1,10 @@
 'use client'
-import { healthcareCategories, specializations } from '@/lib/constant'
+import {
+	getCategoryLabel,
+	getSpecializationLabel,
+	healthcareCategories,
+	specializations,
+} from '@/lib/constant'
 import { userAuthStore } from '@/store/authStore'
 import {
 	Clock,
@@ -224,23 +229,27 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 	const sidebarItems =
 		userType === 'doctor'
 			? [
-					{ id: 'about', label: 'About', icon: User },
-					{ id: 'professional', label: 'Professional Info', icon: Stethoscope },
-					{ id: 'hospital', label: 'Hospital Information', icon: MapPin },
-					{ id: 'availability', label: 'Availability', icon: Clock },
+					{ id: 'about', label: 'Про мене', icon: User },
+					{
+						id: 'professional',
+						label: 'Професійні дані',
+						icon: Stethoscope,
+					},
+					{ id: 'hospital', label: 'Лікарня / клініка', icon: MapPin },
+					{ id: 'availability', label: 'Доступність', icon: Clock },
 			  ]
 			: [
-					{ id: 'about', label: 'About', icon: User },
-					{ id: 'contact', label: 'Contact Information', icon: Phone },
-					{ id: 'medical', label: 'Medical History', icon: FileText },
-					{ id: 'emergency', label: 'Emergency Contact', icon: Phone },
+					{ id: 'about', label: 'Про мене', icon: User },
+					{ id: 'contact', label: 'Контакти', icon: Phone },
+					{ id: 'medical', label: 'Медична історія', icon: FileText },
+					{ id: 'emergency', label: 'Екстрений контакт', icon: Phone },
 			  ]
 
 	const renderAboutSection = () => (
 		<div className='space-y-6'>
 			<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
 				<div className='flex flex-col gap-2'>
-					<Label>Legal first name</Label>
+					<Label>Імʼя та прізвище</Label>
 					<Input
 						value={formData.name}
 						onChange={e => handleInputChnage('name', e.target.value)}
@@ -253,7 +262,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			{userType === 'patient' && (
 				<>
 					<div className='flex flex-col gap-2'>
-						<Label>Official date of birth</Label>
+						<Label>Дата народження</Label>
 						<Input
 							type='date'
 							value={
@@ -275,7 +284,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 					</div>
 
 					<div className='flex flex-col gap-2'>
-						<Label>Gender</Label>
+						<Label>Стать</Label>
 						<RadioGroup
 							value={formData.gender || ''}
 							onValueChange={value => handleInputChnage('gender', value)}
@@ -284,30 +293,30 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 						>
 							<div className='flex items-center space-x-2'>
 								<RadioGroupItem value='male' id='male' />
-								<Label htmlFor='male'>Male</Label>
+								<Label htmlFor='male'>Чоловіча</Label>
 							</div>
 
 							<div className='flex items-center space-x-2'>
 								<RadioGroupItem value='female' id='female' />
-								<Label htmlFor='female'>Female</Label>
+								<Label htmlFor='female'>Жіноча</Label>
 							</div>
 
 							<div className='flex items-center space-x-2'>
 								<RadioGroupItem value='other' id='other' />
-								<Label htmlFor='other'>Other</Label>
+								<Label htmlFor='other'>Інше</Label>
 							</div>
 						</RadioGroup>
 					</div>
 
 					<div className='flex flex-col gap-2'>
-						<Label>Blood Group</Label>
+						<Label>Група крові</Label>
 						<Select
 							value={formData.bloodGroup || ''}
 							onValueChange={value => handleInputChnage('bloodGroup', value)}
 							disabled={!isEditing}
 						>
 							<SelectTrigger>
-								<SelectValue placeholder='Select a blood group' />
+								<SelectValue placeholder='Оберіть групу крові' />
 							</SelectTrigger>
 							<SelectContent>
 								{['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(
@@ -325,7 +334,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 
 			{userType === 'doctor' && (
 				<div>
-					<Label>About</Label>
+					<Label>Про себе</Label>
 					<Textarea
 						value={formData.about || ''}
 						onChange={e => handleInputChnage('about', e.target.value)}
@@ -340,19 +349,19 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 	const renderProfessionalSection = () => (
 		<div className='space-y-6'>
 			<div className='flex flex-col gap-2'>
-				<Label>Specialization</Label>
+				<Label>Спеціалізація</Label>
 				<Select
 					value={formData.specialization || ''}
 					onValueChange={value => handleInputChnage('specialization', value)}
 					disabled={!isEditing}
 				>
 					<SelectTrigger>
-						<SelectValue placeholder='Select specialization' />
+						<SelectValue placeholder='Оберіть спеціалізацію' />
 					</SelectTrigger>
 					<SelectContent>
 						{specializations.map(spec => (
 							<SelectItem key={spec} value={spec}>
-								{spec}
+								{getSpecializationLabel(spec)}
 							</SelectItem>
 						))}
 					</SelectContent>
@@ -360,7 +369,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Category</Label>
+				<Label>Категорії</Label>
 				<div className='flex flex-wrap gap-2 mt-2'>
 					{formData.category?.map((cat: string, index: number) => (
 						<Badge
@@ -368,7 +377,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 							variant='secondary'
 							className='flex items-center spacex-1'
 						>
-							<span>{cat}</span>
+							<span>{getCategoryLabel(cat)}</span>
 							{isEditing && (
 								<button
 									type='button'
@@ -397,7 +406,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 							}}
 						>
 							<SelectTrigger className='w-48'>
-								<SelectValue placeholder='Add Category' />
+								<SelectValue placeholder='Додати категорію' />
 							</SelectTrigger>
 							<SelectContent>
 								{getAvailableCategories().map(category => (
@@ -406,7 +415,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 											<div
 												className={`w-3 h-3 rounded-full ${category.color}`}
 											></div>
-											<span>{category.title}</span>
+											<span>{category.label}</span>
 										</div>
 									</SelectItem>
 								))}
@@ -416,14 +425,14 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 
 					{isEditing && getAvailableCategories().length === 0 && (
 						<span className='text-sm text-gray-500'>
-							All categories have been selected
+							Усі категорії вже обрано
 						</span>
 					)}
 				</div>
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Qualification</Label>
+				<Label>Кваліфікація</Label>
 				<Input
 					value={formData.qualification || ''}
 					onChange={e => handleInputChnage('qualification', e.target.value)}
@@ -432,7 +441,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Experience (years)</Label>
+				<Label>Досвід (років)</Label>
 				<Input
 					type='number'
 					value={formData.experience || ''}
@@ -444,7 +453,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Consultation Fee($)</Label>
+				<Label>Вартість консультації ($)</Label>
 				<Input
 					type='number'
 					value={formData.fees || ''}
@@ -460,7 +469,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 	const renderHospitalSection = () => (
 		<div className='space-y-6'>
 			<div className='flex flex-col gap-2'>
-				<Label>Hospital/Clinic Name</Label>
+				<Label>Назва лікарні / клініки</Label>
 				<Input
 					value={formData.hospitalInfo?.name || ''}
 					onChange={e =>
@@ -471,7 +480,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Address</Label>
+				<Label>Адреса</Label>
 				<Textarea
 					value={formData.hospitalInfo?.address || ''}
 					onChange={e =>
@@ -483,7 +492,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>City</Label>
+				<Label>Місто</Label>
 				<Input
 					value={formData.hospitalInfo?.city || ''}
 					onChange={e =>
@@ -499,7 +508,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 		<div className='space-y-6'>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 				<div className='flex flex-col gap-2'>
-					<Label>Available From Date</Label>
+					<Label>Доступний із</Label>
 					<Input
 						type='date'
 						value={formatDateForInput(formData.availabilityRange?.startDate)}
@@ -511,7 +520,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 				</div>
 
 				<div className='flex flex-col gap-2'>
-					<Label>Available Until Date</Label>
+					<Label>Доступний до</Label>
 					<Input
 						type='date'
 						value={formatDateForInput(formData.availabilityRange?.endDate)}
@@ -523,16 +532,16 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 				</div>
 			</div>
 			<div className='flex flex-col gap-2'>
-				<Label>Excluded Weekdays</Label>
+				<Label>Вихідні дні</Label>
 				<div className='flex flex-wrap gap-2'>
 					{[
-						'Sunday',
-						'Monday',
-						'Tuesday',
-						'Wednesday',
-						'Thursday',
-						'Friday',
-						'Saturday',
+						'Неділя',
+						'Понеділок',
+						'Вівторок',
+						'Середа',
+						'Четвер',
+						"П'ятниця",
+						'Субота',
 					].map((day, index) => (
 						<label key={index} className='flex items-center space-x-2'>
 							<Checkbox
@@ -551,7 +560,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Daily Time Range</Label>
+				<Label>Робочі години</Label>
 				<div className='space-y-3'>
 					{formData.dailyTimeRanges?.map((timeRange: any, index: number) => (
 						<div className='flex items-center space-x-2' key={index}>
@@ -568,7 +577,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 								}
 								disabled={!isEditing}
 							/>
-							<span>to</span>
+							<span>до</span>
 							<Input
 								type='time'
 								value={timeRange.end || ''}
@@ -598,14 +607,14 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 					{isEditing && (
 						<Button variant='outline' size='sm' onClick={addTimeRange}>
 							<Plus className='w-4 h-4 mr-2' />
-							Add Time Range
+							Додати інтервал
 						</Button>
 					)}
 				</div>
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Slot Duration (minutes)</Label>
+				<Label>Тривалість слота (хв)</Label>
 				<Select
 					value={formData.slotDurationMinutes?.toString() || '30'}
 					onValueChange={value =>
@@ -614,16 +623,16 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 					disabled={!isEditing}
 				>
 					<SelectTrigger>
-						<SelectValue placeholder='Select slot duration'></SelectValue>
+						<SelectValue placeholder='Оберіть тривалість'></SelectValue>
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value='15'>15 minutes</SelectItem>
-						<SelectItem value='20'>20 minutes</SelectItem>
-						<SelectItem value='30'>30 minutes</SelectItem>
-						<SelectItem value='45'>45 minutes</SelectItem>
-						<SelectItem value='60'>60 minutes</SelectItem>
-						<SelectItem value='90'>90 minutes</SelectItem>
-						<SelectItem value='120'>120 minutes</SelectItem>
+						<SelectItem value='15'>15 хв</SelectItem>
+						<SelectItem value='20'>20 хв</SelectItem>
+						<SelectItem value='30'>30 хв</SelectItem>
+						<SelectItem value='45'>45 хв</SelectItem>
+						<SelectItem value='60'>60 хв</SelectItem>
+						<SelectItem value='90'>90 хв</SelectItem>
+						<SelectItem value='120'>120 хв</SelectItem>
 					</SelectContent>
 				</Select>
 			</div>
@@ -633,7 +642,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 	const renderContactSection = () => (
 		<div className='space-y-6'>
 			<div className='flex flex-col gap-2'>
-				<Label>Phone Number</Label>
+				<Label>Номер телефону</Label>
 				<Input
 					value={formData.phone || ''}
 					onChange={e => handleInputChnage('phone', e.target.value)}
@@ -642,7 +651,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Phone Number</Label>
+				<Label>Електронна пошта</Label>
 				<Input value={formData.email || ''} disabled={true} />
 			</div>
 		</div>
@@ -651,7 +660,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 	const renderMedicalSection = () => (
 		<div className='space-y-6'>
 			<div className='flex flex-col gap-2'>
-				<Label>Allergies</Label>
+				<Label>Алергії</Label>
 				<Textarea
 					value={formData.medicalHistory.allergies || ''}
 					onChange={e =>
@@ -663,7 +672,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Current Medications</Label>
+				<Label>Поточні препарати</Label>
 				<Textarea
 					value={formData.medicalHistory.currentMedications || ''}
 					onChange={e =>
@@ -678,7 +687,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Chronic Conditions</Label>
+				<Label>Хронічні захворювання</Label>
 				<Textarea
 					value={formData.medicalHistory.chronicConditions || ''}
 					onChange={e =>
@@ -697,7 +706,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 	const renderEmergencySection = () => (
 		<div className='space-y-6'>
 			<div className='flex flex-col gap-2'>
-				<Label>Emergency Contact Name</Label>
+				<Label>Імʼя контактної особи</Label>
 				<Input
 					value={formData.emergencyContact?.name || ''}
 					onChange={e =>
@@ -708,7 +717,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Emergency Contact Phone</Label>
+				<Label>Телефон контактної особи</Label>
 				<Input
 					value={formData.emergencyContact?.phone || ''}
 					onChange={e =>
@@ -719,7 +728,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 			</div>
 
 			<div className='flex flex-col gap-2'>
-				<Label>Relationship</Label>
+				<Label>Хто це для вас</Label>
 				<Input
 					value={formData.emergencyContact?.relationship || ''}
 					onChange={e =>
@@ -751,14 +760,14 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 		}
 	}
 
-	if (!user) return <div>Loading...</div>
+	if (!user) return <div>Завантаження...</div>
 	return (
 		<>
 			<Header showDashboardNav={true} />
 			<div className='min-h-screen bg-gray-50 pt-16'>
 				<div className='container mx-auto px-4 py-8'>
 					<div className='mb-8'>
-						<h1 className='text-3xl font-bold text-gray-900'>Records</h1>
+						<h1 className='text-3xl font-bold text-gray-900'>Профіль</h1>
 					</div>
 
 					<div className='flex items-center space-x-8 mb-8'>
@@ -809,14 +818,16 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 														variant='outline'
 														onClick={() => setIsEditing(false)}
 													>
-														Cancel
+														Скасувати
 													</Button>
 													<Button onClick={handleSave} disabled={loading}>
-														{loading ? 'Saving...' : 'Save'}
+														{loading ? 'Збереження...' : 'Зберегти'}
 													</Button>
 												</>
 											) : (
-												<Button onClick={() => setIsEditing(true)}>Edit</Button>
+												<Button onClick={() => setIsEditing(true)}>
+													Редагувати
+												</Button>
 											)}
 										</div>
 									</div>

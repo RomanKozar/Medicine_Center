@@ -1,8 +1,8 @@
-import DoctorOnboardingForm from '@/components/doctor/DoctorOnboardingForm'
+﻿import DoctorOnboardingForm from '@/components/doctor/DoctorOnboardingForm'
 
 export const metadata = {
-	title: 'Complete Your Doctor Profile - HealthTap',
-	description: 'Set up your doctor profile to start offering consultations.',
+	title: 'Заповніть профіль лікаря | HealOnline',
+	description: 'Налаштуйте профіль, щоб приймати пацієнтів онлайн.',
 }
 
 export default function DoctorOnboardingPage() {

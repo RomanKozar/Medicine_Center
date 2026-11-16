@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
@@ -14,18 +14,18 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-	title: 'MediCare+ - Online Doctor Consultations',
+	title: 'HealOnline - онлайн-консультації з лікарями',
 	description:
-		'Connect with certified doctors online for quality healthcare. Professional medical consultations from the comfort of your home.',
+		'Звʼяжіться з перевіреними лікарями онлайн. Якісна медична допомога з дому.',
 	keywords: [
-		'telemedicine',
-		'online doctor',
-		'healthcare',
-		'consultation',
-		'medical advice',
-		'teleconsultation',
+		'телемедицина',
+		'лікар онлайн',
+		'медицина',
+		'консультація',
+		'медична допомога',
+		'телеконсультація',
 	],
-	authors: [{ name: 'MediCare+' }],
+	authors: [{ name: 'HealOnline' }],
 }
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang='en'>
+		<html lang='uk'>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>

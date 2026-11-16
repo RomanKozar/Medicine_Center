@@ -98,12 +98,12 @@ const CalendarStep = ({
 		<div className='space-y-8'>
 			<div>
 				<h3 className='text-2xl font-bold text-gray-900 mb-6'>
-					Select Date & Time
+					Оберіть дату та час
 				</h3>
 				<div className='grid md:grid-cols-2 gap-8'>
 					<div>
 						<Label className='text-base font-semibold mb-4 block'>
-							Choose Date
+							Дата
 						</Label>
 						<div className='border rounded-lg p-4'>
 							<Calendar
@@ -125,10 +125,10 @@ const CalendarStep = ({
 					{/* Time slots */}
 					<div>
 						<Label className='text-base font-semibold mb-4 block'>
-							Available Time Slots
+							Доступні часові слоти
 							{availableSlots.length > 0 && (
 								<span className='text-sm font-normal text-gray-500 ml-2'>
-									({availableSlots.length} slots avaiable)
+									(доступно: {availableSlots.length})
 								</span>
 							)}
 						</Label>
@@ -161,12 +161,12 @@ const CalendarStep = ({
 													{slot}
 													{isPast && (
 														<span className='text-xs ml-2 opacity-75'>
-															(Past)
+															(минулий)
 														</span>
 													)}
 													{isBooked && !isPast && (
 														<span className='text-xs ml-2 opacity-75'>
-															(Booked)
+															(зайнято)
 														</span>
 													)}
 												</Button>
@@ -179,8 +179,8 @@ const CalendarStep = ({
 											onClick={() => setShowMoreSlots(!showMoreSlots)}
 										>
 											{showMoreSlots
-												? 'Show Less'
-												: `+ ${availableSlots.length - 10} show more`}
+												? 'Згорнути'
+												: `+ ще ${availableSlots.length - 10}`}
 										</Button>
 									)}
 								</div>
@@ -188,16 +188,16 @@ const CalendarStep = ({
 								<div className='text-center py-12 text-gray-500'>
 									<Clock className='w-16 h-16 mx-auto mb-4 opacity-30' />
 									<h4 className='text-lg font-medium mb-2'>
-										No slots available
+										Немає вільних слотів
 									</h4>
-									<p className='text-sm'>Please Select a different date</p>
+									<p className='text-sm'>Оберіть іншу дату</p>
 								</div>
 							)
 						) : (
 							<div className='text-center py-12 text-gray-500'>
 								<CalendarIcon className='w-16 h-16 mx-auto mb-4 opacity-30' />
 								<p className='text-sm'>
-									Please Select a date to view available slots
+									Спочатку оберіть дату, щоб побачити доступні слоти
 								</p>
 							</div>
 						)}
@@ -211,7 +211,7 @@ const CalendarStep = ({
 					disabled={!selectedDate || !selectedSlot}
 					className='px-8 py-3 bg-blue-600 hover:bg-blue-700 text-lg font-semibold'
 				>
-					Continue
+					Далі
 				</Button>
 			</div>
 		</div>

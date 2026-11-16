@@ -1,9 +1,9 @@
-import AuthForm from '@/components/auth/AuthForm'
+﻿import AuthForm from '@/components/auth/AuthForm'
 
 export const metadata = {
-	title: 'Doctor Login - MediCare+',
+	title: 'Вхід лікаря | HealOnline',
 	description:
-		'Healthcare provider sign in to MediCare+ platform. Manage your practice and consultations.',
+		'Увійдіть до кабінету лікаря HealOnline - керуйте практикою та консультаціями.',
 }
 
 export default function DoctorLoginPage() {

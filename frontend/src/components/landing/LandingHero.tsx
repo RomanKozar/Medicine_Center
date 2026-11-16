@@ -29,12 +29,12 @@ const LandingHero = () => {
 		<section className='py-20 px-4 bg-gradient-to-b from-blue-50 to-white'>
 			<div className='container mx-auto text-center'>
 				<h1 className='text-5xl md:text-6xl font-bold text-blue-900 leading-tight mb-6'>
-					The place where <br />
-					<span className='text-blue-900'>doctors listen - to you</span>
+					Місце, де <br />
+					<span className='text-blue-900'>лікарі вас вислуховують</span>
 				</h1>
 				<p className='text-xl text-gray-600 mb-8 max-w-2xl mx-auto'>
-					Online primary care that's affordable with or without insurance.
-					Quality healthcare, accessible anytime, anywhere.
+					Первинна допомога онлайн - доступно зі страховкою чи без неї.
+					Якісна медицина у будь-який час і в будь-якому місці.
 				</p>
 				<div className='flex flex-col sm:flex-row gap-4 justify-center mb-12'>
 					<Button
@@ -42,7 +42,7 @@ const LandingHero = () => {
 						size='lg'
 						className='bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-full px-8 py-3 text-lg'
 					>
-						Book a video visit
+						Записатися на відеовізит
 					</Button>
 					<Link href='/login/doctor'>
 						<Button
@@ -50,7 +50,7 @@ const LandingHero = () => {
 							variant='outline'
 							className='w-full border-blue-600 text-blue-600   hover:bg-blue-50 rounded-full px-8 py-3 text-lg'
 						>
-							Login as Doctor
+							Увійти як лікар
 						</Button>
 					</Link>
 				</div>
@@ -77,7 +77,7 @@ const LandingHero = () => {
 										</svg>
 									</div>
 									<span className='text-xs font-medium text-blue-900 text-center leading-tight'>
-										{category.title}
+										{category.label}
 									</span>
 								</button>
 							))}
@@ -89,15 +89,15 @@ const LandingHero = () => {
 				<div className='flex flex-wrap justify-center items-center gap-8 text-sm text-gray-600'>
 					<div className='flex items-center space-x-2'>
 						<div className='w-2 h-2 bg-green-500 rounded-full'></div>
-						<span>500+ Certified Doctors</span>
+						<span>500+ сертифікованих лікарів</span>
 					</div>
 					<div className='flex items-center space-x-2'>
 						<div className='w-2 h-2 bg-green-500 rounded-full'></div>
-						<span>50,000+ Satisfied Patients</span>
+						<span>50 000+ задоволених пацієнтів</span>
 					</div>
 					<div className='flex items-center space-x-2'>
 						<div className='w-2 h-2 bg-green-500 rounded-full'></div>
-						<span>24/7 Available</span>
+						<span>Цілодобово</span>
 					</div>
 				</div>
 			</div>

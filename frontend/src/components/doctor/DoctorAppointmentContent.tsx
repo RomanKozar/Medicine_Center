@@ -20,7 +20,12 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
-import { emptyStates, getStatusColor } from '@/lib/constant'
+import {
+	emptyStates,
+	getConsultationTypeLabel,
+	getStatusColor,
+	getStatusLabel,
+} from '@/lib/constant'
 import PrescriptionViewModal from './PrescriptionViewModal'
 
 const DoctorAppointmentContent = () => {
@@ -68,7 +73,7 @@ const DoctorAppointmentContent = () => {
 	}, [appointments])
 
 	const formatDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString('en-US', {
+		return new Date(dateString).toLocaleDateString('uk-UA', {
 			weekday: 'long',
 			year: 'numeric',
 			month: 'long',
@@ -109,7 +114,7 @@ const DoctorAppointmentContent = () => {
 
 	const handleMarkCancelled = async (appointmentId: string) => {
 		if (
-			confirm('Are you sure you want to mark this appointment as cancelled')
+			confirm('Ви впевнені, що хочете скасувати цей запис?')
 		) {
 			try {
 				await updateAppointmentStatus(appointmentId, 'Cancelled')
@@ -149,7 +154,7 @@ const DoctorAppointmentContent = () => {
 									{appointment.patientId?.name}
 								</h3>
 								<p className='text-gray-600'>
-									Age : {appointment.patientId?.age}
+									Вік: {appointment.patientId?.age}
 								</p>
 								<p className='text-sm text-gray-600'>
 									{appointment.patientId?.email}
@@ -158,11 +163,11 @@ const DoctorAppointmentContent = () => {
 
 							<div className='mt-2 md:mt-0 text-center md:text-right'>
 								<Badge className={getStatusColor(appointment.status)}>
-									{appointment.status}
+									{getStatusLabel(appointment.status)}
 								</Badge>
 								{isToday(appointment.slotStartIso) && (
 									<div className='text-xs text-blue-600 font-semibold mt-1'>
-										TODAY
+										СЬОГОДНІ
 									</div>
 								)}
 							</div>
@@ -181,19 +186,21 @@ const DoctorAppointmentContent = () => {
 									) : (
 										<Phone className='w-4 h-4' />
 									)}
-									<span>{appointment.consultationType}</span>
+									<span>
+										{getConsultationTypeLabel(appointment.consultationType)}
+									</span>
 								</div>
 							</div>
 
 							<div className='text-center md:text-left'>
 								<div className='flex justify-center gap-2 text-sm text-gray-600'>
-									<span className='font-semibold'>Fee:</span>
+									<span className='font-semibold'>Вартість:</span>
 									<p>${appointment.doctorId?.fees}</p>
 								</div>
 
 								{appointment.symptoms && (
 									<div className='flex justify-center gap-2 text-sm text-gray-600 mt-1'>
-										<span className='font-semibold'>Symptoms</span>
+										<span className='font-semibold'>Симптоми</span>
 										<p className='text-xs text-gray-500 mt-1 line-clamp-2'>
 											{appointment.symptoms}
 										</p>
@@ -211,7 +218,7 @@ const DoctorAppointmentContent = () => {
 											className='bg-green-600 hover:bg-green-700'
 										>
 											<Video className='w-4 h-4 mr-2' />
-											Start Consultation
+											Почати консультацію
 										</Button>
 									</Link>
 								)}
@@ -225,7 +232,7 @@ const DoctorAppointmentContent = () => {
 											onClick={() => handleMarkCancelled(appointment._id)}
 										>
 											<XCircle className='w-4 h-4 mr-2' />
-											Mark Cancelled
+											Скасувати
 										</Button>
 									)}
 								</div>
@@ -241,7 +248,7 @@ const DoctorAppointmentContent = () => {
 													className='text-green-700 border-green-200 hover:bg-green-50'
 												>
 													<Stethoscope className='w-4 h-4 mr-2' />
-													View Report
+													Переглянути звіт
 												</Button>
 											}
 										/>
@@ -290,10 +297,10 @@ const DoctorAppointmentContent = () => {
 					<div className='flex items-center justify-between mb-8'>
 						<div>
 							<h1 className='text-md md:text-3xl font-bold text-gray-900'>
-								My Appointment
+								Мої записи
 							</h1>
 							<p className='text-xs md:text-lg text-gray-600'>
-								Manage your patient consultations
+								Керуйте консультаціями з пацієнтами
 							</p>
 						</div>
 
@@ -301,7 +308,7 @@ const DoctorAppointmentContent = () => {
 							<Link href='/doctor/profile'>
 								<Button>
 									<Calendar className='w-4 h-4 mr-2 ' />
-									Update Availability
+									Оновити доступність
 								</Button>
 							</Link>
 						</div>
@@ -318,11 +325,11 @@ const DoctorAppointmentContent = () => {
 								className='flex items-center space-x-2'
 							>
 								<Clock className='w-4 h-4' />
-								<span>Upcoming ({tabCounts.upcoming})</span>
+								<span>Майбутні ({tabCounts.upcoming})</span>
 							</TabsTrigger>
 							<TabsTrigger value='past' className='flex items-center space-x-2'>
 								<Calendar className='w-4 h-4' />
-								<span>Past ({tabCounts.past})</span>
+								<span>Минулі ({tabCounts.past})</span>
 							</TabsTrigger>
 						</TabsList>
 

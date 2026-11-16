@@ -1,3 +1,4 @@
+import { getConsultationTypeLabel, getSpecializationLabel } from '@/lib/constant'
 import { Appointment } from '@/store/appointmentStore'
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
@@ -21,7 +22,7 @@ const PrescriptionViewModal = ({
 	const closeModal = () => setIsOpen(false)
 
 	const formateDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString('en-US', {
+		return new Date(dateString).toLocaleDateString('uk-UA', {
 			year: 'numeric',
 			month: 'short',
 			day: 'numeric',
@@ -55,7 +56,7 @@ const PrescriptionViewModal = ({
 						<CardHeader className='flex items-center flex-row justify-between space-y-0 pb-3'>
 							<div className='flex items-center space-x-2'>
 								<FileText className='w-5 h-5 text-green-600' />
-								<CardTitle className='text-lg'>Prescription</CardTitle>
+								<CardTitle className='text-lg'>Рецепт</CardTitle>
 							</div>
 
 							<div className='flex items-center space-x-'>
@@ -68,12 +69,12 @@ const PrescriptionViewModal = ({
 									{copied ? (
 										<>
 											<Check className='w-4 h-4' />
-											<span>Copied!</span>
+											<span>Скопійовано!</span>
 										</>
 									) : (
 										<>
 											<Copy className='w-4 h-4' />
-											<span>Copy</span>
+											<span>Копіювати</span>
 										</>
 									)}
 								</Button>
@@ -91,7 +92,9 @@ const PrescriptionViewModal = ({
 									<p className='text-sm text-gray-600'>
 										{userType === 'patient'
 											? otherUser?.specialization
-											: `Age: ${otherUser?.age}`}
+												? getSpecializationLabel(otherUser.specialization)
+												: ''
+											: `Вік: ${otherUser?.age}`}
 									</p>
 								</div>
 								<div className='text-right'>
@@ -99,14 +102,14 @@ const PrescriptionViewModal = ({
 										{formateDate(appointment?.slotStartIso)}
 									</p>
 									<p className='text-sm text-gray-500'>
-										{appointment.consultationType}
+										{getConsultationTypeLabel(appointment.consultationType)}
 									</p>
 								</div>
 							</div>
 
 							<div className='border border-green-200 bg-green-50 p-4 rounded-lg'>
 								<h3 className='font-semibold text-green-800 mb-2'>
-									Prescription
+									Рецепт
 								</h3>
 								<div className='bg-white p-3 rounded border text-sm text-gray-800 whitespace-pre-wrap font-mono'>
 									{appointment?.prescription}
@@ -115,7 +118,7 @@ const PrescriptionViewModal = ({
 
 							{appointment.notes && (
 								<div className='border border-gray-200 bg-gray-50 p-4 rounded-lg'>
-									<h3 className='font-semibold text-gray-800 mb-2'>Notes</h3>
+									<h3 className='font-semibold text-gray-800 mb-2'>Нотатки</h3>
 									<div className='text-sm  text-gray-700 whitespace-pre-wrap'>
 										{appointment?.notes}
 									</div>

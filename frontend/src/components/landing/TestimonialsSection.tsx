@@ -9,7 +9,7 @@ const TestimonialsSection = () => {
 			<div className='max-w-7xl mx-auto'>
 				<div className='text-center mb-12'>
 					<h2 className='text-3xl font-bold text-primary mb-4'>
-						Our patient love us
+						Наші пацієнти нас обожнюють
 					</h2>
 
 					<div className='flex items-center justify-center gap-2 mb-4'>
@@ -25,7 +25,7 @@ const TestimonialsSection = () => {
 								</svg>
 							))}
 						</div>
-						<span className='text-muted-foreground'>72K+ reviews</span>
+						<span className='text-muted-foreground'>72K+ відгуків</span>
 					</div>
 				</div>
 
@@ -66,7 +66,7 @@ const TestimonialsSection = () => {
 
 				<div className='text-center mt-8'>
 					<button className='text-chart-2 hover:text-chart-2/80 font-medium transition-colors duration-200'>
-						Read more
+						Читати більше
 					</button>
 				</div>
 			</div>

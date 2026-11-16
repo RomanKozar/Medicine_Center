@@ -1,9 +1,9 @@
-import ProfilePage from '@/components/ProfilePage/ProfilePage'
+﻿import ProfilePage from '@/components/ProfilePage/ProfilePage'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-	title: 'Doctor Profile | MediCare+',
-	description: 'View and manage your doctor profile in MediCare+ platform.',
+	title: 'Профіль лікаря | HealOnline',
+	description: 'Перегляд і редагування профілю лікаря в HealOnline.',
 }
 
 export default function Page() {

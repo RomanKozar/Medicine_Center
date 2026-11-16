@@ -10,7 +10,7 @@ const FAQSection = () => {
 			<div className='max-w-7xl mx-auto'>
 				<div className='text-center mb-16'>
 					<h2 className='text-3xl font-bold text-primary mb-12'>
-						Trusted by millions since 2010
+						Нам довіряють мільйони з 2010 року
 					</h2>
 
 					<div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center'>
@@ -29,7 +29,7 @@ const FAQSection = () => {
 
 				<div className='max-w-4xl mx-auto'>
 					<h2 className='text-3xl font-bold text-primary text-center mb-12'>
-						Frequently asked questions
+						Поширені запитання
 					</h2>
 
 					<div className='space-y-4'>

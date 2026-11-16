@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { contactInfo, footerSections, socials } from '@/lib/constant'
 import { Stethoscope } from 'lucide-react'
 import React from 'react'
@@ -16,13 +16,13 @@ const Footer = () => {
 									<Stethoscope className='w-6 h-6 text-white' />
 								</div>
 								<div className='text-3xl font-bold bg-gradient-to-br from-white to-blue-100  bg-clip-text text-transparent'>
-									MediCare+
+									HealOnline
 								</div>
 							</div>
 
 							<p className='text-blue-100 mb-6 text-lg leading-relaxed'>
-								Your trusted healthcare partner providing quality medical
-								consultations with certified doctors online, anytime, anywhere.
+								Ваш надійний партнер у сфері здоровʼя: якісні онлайн-консультації
+								із сертифікованими лікарями - у будь-який час і в будь-якому місці.
 							</p>
 
 							<div className='space-y-3 mb-6'>
@@ -71,20 +71,20 @@ const Footer = () => {
 				<div className='py-8 border-t border-blue-700/50'>
 					<div className='flex flex-col md:flex-row items-center justify-between gap-6'>
 						<div>
-							<h4 className='font-semibold text-white mb-2'>Stay Updated</h4>
+							<h4 className='font-semibold text-white mb-2'>Будьте в курсі</h4>
 							<p className='text-blue-200 text-sm'>
-								Get health tips and product updates delivered to your inbox.
+								Отримуйте поради щодо здоровʼя та новини сервісу на пошту.
 							</p>
 						</div>
 
 						<div className='flex flex-col sm:flex-row gap-3 w-full md:w-auto'>
 							<input
 								type='email'
-								placeholder='Enter your email'
+								placeholder='Введіть електронну пошту'
 								className='px-4 py-2 rpounded-lg bg-blue-800/50 border border-blue-600 text-white placeholder:blue-300  focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent min-w-[280px]'
 							/>
 							<Button className='bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg whitespace-nowrap'>
-								Subscribe
+								Підписатися
 							</Button>
 						</div>
 					</div>
@@ -95,11 +95,11 @@ const Footer = () => {
 				<div className='py-6 border-t border-blue-700/50'>
 					<div className='flex flex-col md:flex-row items-center justify-between gap-4'>
 						<div className='text-blue-200 text-sm'>
-							<p>&copy; 2025 MediCare+, Inc. All rights resetved</p>
+							<p>&copy; 2026 HealOnline. Усі права захищено.</p>
 						</div>
 
 						<div className='flex items-center space-x-4'>
-							<span className='text-blue-200 text-sm'>Follow use:</span>
+							<span className='text-blue-200 text-sm'>Слідкуйте за нами:</span>
 							<div className='flex space-x-3'>
 								{socials.map(({ name, icon: Icon, url }) => (
 									<a
@@ -108,7 +108,7 @@ const Footer = () => {
 										target='_blank'
 										rel='noopener noreferrer'
 										className='w-8 h-8 bg-blue-700/50 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-200'
-										aria-label={`Follow use on ${name}`}
+										aria-label={`Слідкуйте за нами в ${name}`}
 									>
 										<Icon className='w-4 h-4 text-white' />
 									</a>

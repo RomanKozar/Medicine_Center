@@ -47,7 +47,7 @@ const PrescriptionModal = ({
 				<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
 					<div className='flex items-center space-x-2'>
 						<FileText className='w-5 h-5 text-blue-600' />
-						<CardTitle>Complete Consultation</CardTitle>
+						<CardTitle>Завершити консультацію</CardTitle>
 					</div>
 					<Button variant='ghost' size='sm' onClick={handleClose}>
 						<X className='w-4 h-4' />
@@ -59,43 +59,43 @@ const PrescriptionModal = ({
 
 						<div>
 							<h3 className='font-semibold text-blue-900'>
-								Confirm Consultation Completion
+								Підтвердження завершення консультації
 							</h3>
 							<p className='text-sm text-blue-700 mt-1'>
-								Are your sure you want to mark the consultation with{' '}
-								<strong>{patientName}</strong> as completed?
+								Ви впевнені, що хочете завершити консультацію з{' '}
+								<strong>{patientName}</strong>?
 							</p>
 						</div>
 					</div>
 
 					<div className='space-y-2'>
 						<Label htmlFor='prescription' className='text-sm font-medium'>
-							Prescription <span className='text-red-500'>*</span>
+							Рецепт <span className='text-red-500'>*</span>
 						</Label>
 						<Textarea
 							id='prescription'
 							value={prescription}
 							onChange={e => setPrescription(e.target.value)}
-							placeholder='Enter prescription details, medications, dosages, and intructions'
+							placeholder='Вкажіть препарати, дозування та інструкції'
 							rows={6}
 							className='min-h-[120px]'
 							required
 						/>
 						<p className='text-xs text-gray-500'>
-							Include medication names, dosages, frequency, and any special
-							intructions.
+							Вкажіть назви препаратів, дози, частоту прийому та особливі
+							вказівки.
 						</p>
 					</div>
 
 					<div className='space-y-2'>
 						<Label htmlFor='notes' className='text-sm font-medium'>
-							Additonal Notes (Optional)
+							Додаткові нотатки (необовʼязково)
 						</Label>
 						<Textarea
 							id='notes'
 							value={notes}
 							onChange={e => setNotes(e.target.value)}
-							placeholder='Any additional notes about the consultation, follow-up intructions, etc...'
+							placeholder='Додаткові нотатки щодо консультації, рекомендації для нагляду...'
 							rows={4}
 							className='min-h-[120px]'
 						/>
@@ -103,7 +103,7 @@ const PrescriptionModal = ({
 
 					<div className='flex justify-end space-x-3 pt-4 border-t'>
 						<Button variant='outline' onClick={handleClose} disabled={loading}>
-							Cancel
+							Скасувати
 						</Button>
 
 						<Button
@@ -114,12 +114,12 @@ const PrescriptionModal = ({
 							{loading ? (
 								<>
 									<div className='animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2' />
-									Saving...
+									Збереження...
 								</>
 							) : (
 								<>
 									<Save className='w-4 h-4 mr-2' />
-									Save to Complete
+									Зберегти й завершити
 								</>
 							)}
 						</Button>

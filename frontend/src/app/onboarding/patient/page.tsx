@@ -1,8 +1,8 @@
-import PatientOnboardingForm from '@/components/patient/PatientOnboardingForm'
+﻿import PatientOnboardingForm from '@/components/patient/PatientOnboardingForm'
 
 export const metadata = {
-	title: 'Complete Your Patient Profile - HealthTap',
-	description: 'Complete your profile to start booking appointments.',
+	title: 'Заповніть профіль пацієнта | HealOnline',
+	description: 'Завершіть профіль, щоб записуватися на прийом.',
 }
 
 export default function PatientOnboardingPage() {

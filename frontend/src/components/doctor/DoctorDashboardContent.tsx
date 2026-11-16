@@ -25,7 +25,11 @@ import Link from 'next/link'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
-import { getStatusColor } from '@/lib/constant'
+import {
+	getSpecializationLabel,
+	getStatusColor,
+	getStatusLabel,
+} from '@/lib/constant'
 
 const DoctorDashboardContent = () => {
 	const searchParams = useSearchParams()
@@ -89,7 +93,7 @@ const DoctorDashboardContent = () => {
 	}
 
 	const formateDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString('en-US', {
+		return new Date(dateString).toLocaleDateString('uk-UA', {
 			hour: '2-digit',
 			minute: '2-digit',
 			hour12: true,
@@ -140,7 +144,7 @@ const DoctorDashboardContent = () => {
 
 	const statsCards = [
 		{
-			title: 'Total Patients',
+			title: 'Усього пацієнтів',
 			value: dashboardData?.stats?.totalPatients?.toString() || '0',
 			icon: Users,
 			color: 'text-blue-600',
@@ -149,7 +153,7 @@ const DoctorDashboardContent = () => {
 			changeColor: 'text-green-600',
 		},
 		{
-			title: "Today's Appointments",
+			title: 'Записи на сьогодні',
 			value: dashboardData?.stats?.todayAppointments?.toString() || '0',
 			icon: Calendar,
 			color: 'text-green-600',
@@ -158,7 +162,7 @@ const DoctorDashboardContent = () => {
 			changeColor: 'text-green-600',
 		},
 		{
-			title: 'Total Revenue',
+			title: 'Загальний дохід',
 			value: `$${dashboardData?.stats?.totalRevenue?.toLocaleString() || '0'}`,
 			icon: DollarSign,
 			color: 'text-purple-600',
@@ -167,7 +171,7 @@ const DoctorDashboardContent = () => {
 			changeColor: 'text-green-600',
 		},
 		{
-			title: 'Completed',
+			title: 'Завершено',
 			value: dashboardData?.stats?.completedAppointments?.toString() || '0',
 			icon: Activity,
 			color: 'text-orange-600',
@@ -199,10 +203,14 @@ const DoctorDashboardContent = () => {
 
 								<div>
 									<h1 className='text-md md:text-3xl font-bold text-gray-900'>
-										Good evening, {dashboardData?.user?.name}
+										Добрий вечір, {dashboardData?.user?.name}
 									</h1>
 									<p className='text-gray-600 text-xs md:text-lg'>
-										{dashboardData?.user?.specialization}
+										{dashboardData?.user?.specialization
+											? getSpecializationLabel(
+													dashboardData.user.specialization
+											  )
+											: ''}
 									</p>
 									<div className='flex items-center space-x-4 mt-2'>
 										<div className='flex items-center space-x-1 text-sm text-gray-500'>
@@ -226,7 +234,7 @@ const DoctorDashboardContent = () => {
 								<Link href='/doctor/profile'>
 									<Button className='bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'>
 										<Plus className='w-4 h-4 mr-2' />
-										Update Availability
+										Оновити доступність
 									</Button>
 								</Link>
 							</div>
@@ -251,7 +259,7 @@ const DoctorDashboardContent = () => {
 												<span
 													className={`text-sm font-medium ${stat.changeColor}`}
 												>
-													{stat.change} from last year
+													{stat.change} за рік
 												</span>
 											</div>
 										</div>
@@ -272,14 +280,14 @@ const DoctorDashboardContent = () => {
 							<CardHeader className='flex flex-row items-center justify-between'>
 								<CardTitle className='flex items-center space-x-2'>
 									<Calendar className='w-5 h-5 text-blue-500' />
-									<span>Today's Schedule</span>
+									<span>Розклад на сьогодні</span>
 									<Badge variant='secondary' className='ml-2'>
-										{dashboardData?.todayAppointments?.length} appointments
+										{dashboardData?.todayAppointments?.length} записів
 									</Badge>
 								</CardTitle>
 								<Link href='/doctor/appointments'>
 									<Button variant='ghost' size='sm'>
-										View All <ChevronRight className='w-4 h-4 ml-1' />
+										Усі <ChevronRight className='w-4 h-4 ml-1' />
 									</Button>
 								</Link>
 							</CardHeader>
@@ -306,7 +314,7 @@ const DoctorDashboardContent = () => {
 													</div>
 
 													<p className='text-sm text-gray-600 line-clamp-1'>
-														Age: {appointment?.patientId?.age}
+														Вік: {appointment?.patientId?.age}
 													</p>
 
 													<p className='text-sm text-gray-600 line-clamp-1'>
@@ -316,7 +324,7 @@ const DoctorDashboardContent = () => {
 														<Badge
 															className={getStatusColor(appointment.status)}
 														>
-															{appointment.status}
+															{getStatusLabel(appointment.status)}
 														</Badge>
 														<div className='flex items-center space-x-1'>
 															{appointment.consultationType ===
@@ -339,7 +347,7 @@ const DoctorDashboardContent = () => {
 																className='bg-green-600 hover:bg-green-700'
 															>
 																<Video className='w-4 h-4 mr-2' />
-																Start
+																Почати
 															</Button>
 														</Link>
 													)}
@@ -351,9 +359,9 @@ const DoctorDashboardContent = () => {
 									<div className='text-center py-12'>
 										<Calendar className='w-16 h-16 text-gray-300 mx-auto mb-4' />
 										<h3 className='text-lg font-semibold text-gray-900 mb-2'>
-											No appointment today
+											Сьогодні записів немає
 										</h3>
-										<p className='text-gray-600'>Enjoy your free day!</p>
+										<p className='text-gray-600'>Гарного вільного дня!</p>
 									</div>
 								)}
 							</CardContent>
@@ -364,11 +372,11 @@ const DoctorDashboardContent = () => {
 								<CardHeader className='flex flex-row items-center justify-between'>
 									<CardTitle className='flex items-center space-x-2'>
 										<Clock className='w-5 h-5 text-blue-500' />
-										<span>Upcoming</span>
+										<span>Майбутні</span>
 									</CardTitle>
 									<Link href='/doctor/appointments'>
 										<Button variant='ghost' size='sm'>
-											View All <ChevronRight className='w-4 h-4 ml-1' />
+											Усі <ChevronRight className='w-4 h-4 ml-1' />
 										</Button>
 									</Link>
 								</CardHeader>
@@ -415,7 +423,7 @@ const DoctorDashboardContent = () => {
 										<div className='text-center py-12'>
 											<Clock className='w-12 h-12 text-gray-300 mx-auto mb-4' />
 											<p className='text-sm text-gray-500'>
-												No upcoming appointments
+												Немає майбутніх записів
 											</p>
 										</div>
 									)}
@@ -426,13 +434,13 @@ const DoctorDashboardContent = () => {
 								<CardHeader>
 									<CardTitle className='flex items-center space-x-2'>
 										<TrendingUp className='w-5 h-5 text-blue-500' />
-										<span>Performance</span>
+										<span>Показники</span>
 									</CardTitle>
 								</CardHeader>
 								<CardContent className='space-y-4'>
 									<div className='flex items-center justify-between'>
 										<span className='text-sm text-gray-600'>
-											Patient Satisfaction
+											Задоволеність пацієнтів
 										</span>
 										<div className='flex items-center space-x-1'>
 											<Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
@@ -444,14 +452,14 @@ const DoctorDashboardContent = () => {
 
 									<div className='flex items-center justify-between'>
 										<span className='text-sm text-gray-600'>
-											Completion Rate
+											Відсоток завершення
 										</span>
 										<span className='font-semibold text-green-600'>
 											{dashboardData?.performance?.completionRate}
 										</span>
 									</div>
 									<div className='flex items-center justify-between'>
-										<span className='text-sm text-gray-600'>Response Time</span>
+										<span className='text-sm text-gray-600'>Час відповіді</span>
 										<span className='font-semibold text-blue-600'>
 											{dashboardData?.performance?.responseTime}
 										</span>

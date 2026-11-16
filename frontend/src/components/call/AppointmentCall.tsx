@@ -1,3 +1,4 @@
+import { getConsultationTypeLabel } from '@/lib/constant'
 import { Appointment } from '@/store/appointmentStore'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt'
@@ -193,13 +194,13 @@ const AppointmentCall = ({
 			<div className='bg-white border-b p-4 flex items-center justify-between'>
 				<div>
 					<h1 className='text-xl font-semibold'>
-						{isVideoCall ? 'Video Consultation' : 'Voice Consultation'}
+						{getConsultationTypeLabel(appointment.consultationType)}
 					</h1>
 
 					<p className='text-sm text-gray-600'>
 						{currentUser.role === 'doctor'
-							? `Patient: ${appointment.patientId.name}`
-							: `Dr: ${appointment.doctorId.name}`}
+							? `Пацієнт: ${appointment.patientId.name}`
+							: `Лікар: ${appointment.doctorId.name}`}
 					</p>
 				</div>
 			</div>

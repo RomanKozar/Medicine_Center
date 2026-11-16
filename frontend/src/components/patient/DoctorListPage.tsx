@@ -8,7 +8,13 @@ import { FilterIcon, MapPin, Search, Star, X } from 'lucide-react'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
-import { cities, healthcareCategories, specializations } from '@/lib/constant'
+import {
+	cities,
+	getCategoryLabel,
+	getSpecializationLabel,
+	healthcareCategories,
+	specializations,
+} from '@/lib/constant'
 import { Card, CardContent } from '../ui/card'
 import {
 	Select,
@@ -68,10 +74,10 @@ const DoctorListPage = () => {
 					<div className='flex items-center justify-between mb-6'>
 						<div>
 							<h1 className='text-3xl font-bold text-gray-900'>
-								Choose your doctor
+								Оберіть лікаря
 							</h1>
 							<p className='text-gray-600 mt-1'>
-								Find the perfect healthcare provider for your needs
+								Знайдіть фахівця, який відповідає вашим потребам
 							</p>
 						</div>
 					</div>
@@ -80,7 +86,7 @@ const DoctorListPage = () => {
 						<div className='flex-1 relative'>
 							<Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 ' />
 							<Input
-								placeholder='Search doctors by name , specialization, or condition...'
+								placeholder='Пошук за імʼям, спеціалізацією чи напрямком...'
 								className='pl-10 h-12 text-base'
 								value={filters.search || ''}
 								onChange={e => handleFilterChange('search', e.target.value)}
@@ -93,7 +99,7 @@ const DoctorListPage = () => {
 							onClick={() => setShowFilters(!showFilters)}
 						>
 							<FilterIcon className='w-4 h-4 mr-2' />
-							Filters
+							Фільтри
 							{activeFilterCount > 0 && (
 								<Badge
 									variant='secondary'
@@ -107,7 +113,7 @@ const DoctorListPage = () => {
 
 					<div className='mb-6'>
 						<h3 className='text-sm font-medium text-gray-700 mb-3'>
-							Browse by Category
+							Перегляд за категорією
 						</h3>
 
 						<div className='flex overflow-x-auto gap-3 pb-2 scrollbar-hide'>
@@ -116,7 +122,7 @@ const DoctorListPage = () => {
 								className='flex-shrink-0 rounded-full'
 								onClick={() => handleFilterChange('category', '')}
 							>
-								All Categories
+								Усі категорії
 							</Button>
 
 							{healthcareCategories.map(cat => (
@@ -139,7 +145,7 @@ const DoctorListPage = () => {
 											<path d={cat.icon} />
 										</svg>
 									</div>
-									{cat.title}
+									{cat.label}
 								</Button>
 							))}
 						</div>
@@ -148,7 +154,7 @@ const DoctorListPage = () => {
 					{showFilters && (
 						<Card className='p-4 mb-4 bg-gray-50'>
 							<div className='flex items-center justify-between mb-4 '>
-								<h3 className='font-semibold'>Advanced Filters</h3>
+								<h3 className='font-semibold'>Розширені фільтри</h3>
 
 								<Button
 									variant='ghost'
@@ -162,7 +168,7 @@ const DoctorListPage = () => {
 							<div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
 								<div>
 									<label className='text-sm font-medium mb-2 block'>
-										Specialization
+										Спеціалізація
 									</label>
 									<Select
 										value={filters.specialization || ''}
@@ -171,13 +177,13 @@ const DoctorListPage = () => {
 										}
 									>
 										<SelectTrigger>
-											<SelectValue placeholder='All specializations'></SelectValue>
+											<SelectValue placeholder='Усі спеціалізації'></SelectValue>
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value='all'>All Specializations</SelectItem>
+											<SelectItem value='all'>Усі спеціалізації</SelectItem>
 											{specializations.map(spec => (
 												<SelectItem key={spec} value={spec}>
-													{spec}
+													{getSpecializationLabel(spec)}
 												</SelectItem>
 											))}
 										</SelectContent>
@@ -186,17 +192,17 @@ const DoctorListPage = () => {
 
 								<div>
 									<label className='text-sm font-medium mb-2 block'>
-										Location
+										Місто
 									</label>
 									<Select
 										value={filters.city || ''}
 										onValueChange={value => handleFilterChange('city', value)}
 									>
 										<SelectTrigger>
-											<SelectValue placeholder='All locations'></SelectValue>
+											<SelectValue placeholder='Усі міста'></SelectValue>
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value='all'>All locations</SelectItem>
+											<SelectItem value='all'>Усі міста</SelectItem>
 											{cities.map(city => (
 												<SelectItem key={city} value={city}>
 													{city}
@@ -208,7 +214,7 @@ const DoctorListPage = () => {
 
 								<div>
 									<label className='text-sm font-medium mb-2 block'>
-										Sort by
+										Сортування
 									</label>
 									<Select
 										value={filters.sortBy || 'experience'}
@@ -218,10 +224,10 @@ const DoctorListPage = () => {
 											<SelectValue />
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value='experience'>Experience</SelectItem>
-											<SelectItem value='fees'>Consultation Fee</SelectItem>
-											<SelectItem value='name'>Name (A-Z)</SelectItem>
-											<SelectItem value='createdAt'>Newest First</SelectItem>
+											<SelectItem value='experience'>Досвід</SelectItem>
+											<SelectItem value='fees'>Вартість консультації</SelectItem>
+											<SelectItem value='name'>Імʼя (А–Я)</SelectItem>
+											<SelectItem value='createdAt'>Спочатку нові</SelectItem>
 										</SelectContent>
 									</Select>
 								</div>
@@ -232,7 +238,7 @@ const DoctorListPage = () => {
 										onClick={clearFilters}
 										className='w-full'
 									>
-										Clear All Filters
+										Скинути всі фільтри
 									</Button>
 								</div>
 							</div>
@@ -243,7 +249,9 @@ const DoctorListPage = () => {
 
 			<div className='max-w-7xl mx-auto px-4 py-8'>
 				<div className='mb-4 text-sm text-gray-600'>
-					{loading ? 'Seaching...' : `${doctors.length} doctor found`}
+					{loading
+						? 'Пошук...'
+						: `Знайдено лікарів: ${doctors.length}`}
 				</div>
 
 				{loading ? (
@@ -289,11 +297,11 @@ const DoctorListPage = () => {
 											{doctor.name}
 										</h3>
 										<p className='text-gray-600 text-sm mb-1'>
-											{doctor.specialization}
+											{getSpecializationLabel(doctor.specialization)}
 										</p>
 
 										<p className='text-gray-500 text-xs mb-2'>
-											{doctor.experience} years experience
+											{doctor.experience} років досвіду
 										</p>
 
 										<div className='flex items-center justify-center space-x-1 mb-3'>
@@ -317,7 +325,7 @@ const DoctorListPage = () => {
 												variant='secondary'
 												className='bg-blue-50 text-blue-700 border-blue-200 text-xs'
 											>
-												{category}
+												{getCategoryLabel(category)}
 											</Badge>
 										))}
 
@@ -326,7 +334,7 @@ const DoctorListPage = () => {
 											className='bg-yellow-50 text-yellow-700 border-yellow-200 text-xs'
 										>
 											<Star className='w-3 h-3 mr-1' />
-											Popular
+											Популярний
 										</Badge>
 									</div>
 
@@ -340,7 +348,7 @@ const DoctorListPage = () => {
 
 										<div className='flex justify-center items-center gap-2 text-center'>
 											<p className='text-gray-600 text-md font-semibold'>
-												Consultation Fee:
+												Вартість консультації:
 											</p>
 											<p className='font-bold text-green-600 text-lg'>
 												${doctor.fees}
@@ -354,7 +362,7 @@ const DoctorListPage = () => {
 											className='block'
 										>
 											<Button className='w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg ply-2 text-sm font-medium shadow-lg hover:shadow-xl transition-all'>
-												Book Appointment
+												Записатися на прийом
 											</Button>
 										</Link>
 									</div>
@@ -368,12 +376,12 @@ const DoctorListPage = () => {
 							<Search className='w-16 h-16 mx-auto' />
 						</div>
 						<h3 className='text-xl font-semibold text-gray-600 mb-2'>
-							No doctors found
+							Лікарів не знайдено
 						</h3>
 						<p className='text-gray-500 mb-4'>
-							Try adjusting your filters or search criteria
+							Спробуйте змінити фільтри або пошуковий запит
 						</p>
-						<Button onClick={clearFilters}>Clear Filters</Button>
+						<Button onClick={clearFilters}>Скинути фільтри</Button>
 					</Card>
 				)}
 			</div>

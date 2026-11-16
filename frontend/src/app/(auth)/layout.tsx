@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { userAuthStore } from '@/store/authStore'
 import { is } from 'date-fns/locale'
 import { redirect } from 'next/navigation'
@@ -45,11 +45,11 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 								/>
 							</svg>
 						</div>
-						<h2 className='text-4xl font-bold mb-4'>Welcome to MediCare+</h2>
-						<p className='text-xl opacity-90 mb-4'>Your health, our priority</p>
+						<h2 className='text-4xl font-bold mb-4'>Ласкаво просимо до HealOnline</h2>
+						<p className='text-xl opacity-90 mb-4'>Ваше здоровʼя - наш пріоритет</p>
 						<p className='text-lg opacity-75'>
-							Connecting patients with certified healthcare providers for
-							quality medical consultations.
+							Звʼязуємо пацієнтів із перевіреними лікарями для якісних
+							медичних консультацій онлайн.
 						</p>
 					</div>
 				</div>
