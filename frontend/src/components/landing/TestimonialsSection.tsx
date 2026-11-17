@@ -65,7 +65,7 @@ const TestimonialsSection = () => {
 				</div>
 
 				<div className='text-center mt-8'>
-					<button className='text-chart-2 hover:text-chart-2/80 font-medium transition-colors duration-200'>
+					<button className='text-chart-2 hover:text-chart-2/80 font-medium transition-colors duration-200 cursor-pointer'>
 						Читати більше
 					</button>
 				</div>

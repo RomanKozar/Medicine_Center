@@ -82,8 +82,11 @@ const PayementStep = ({
 		setIsPaymentLoading(false)
 	}
 
+	const readyToPay = Boolean(appointmentId && patientName)
+
 	const handlePaynow = () => {
-		if (appointmentId && patientName) {
+		if (loading || isPaymentLoading || isProcessing) return
+		if (readyToPay) {
 			handleMockPayment()
 		} else {
 			onConfirm()
@@ -248,13 +251,19 @@ const PayementStep = ({
 			</div>
 
 			{paymentStatus === 'idle' && (
-				<div className='flex justify-between gap-2'>
+				<div className='flex flex-col items-end gap-2'>
+					{readyToPay && (
+						<p className='text-sm text-gray-600 text-right'>
+							Запис створено. Натисніть ще раз, щоб підтвердити оплату.
+						</p>
+					)}
+				<div className='flex justify-between gap-2 w-full'>
 					<Button variant='outline' onClick={onBack} className='px-8 py-3'>
 						Назад
 					</Button>
 					<Button
 						onClick={handlePaynow}
-						disabled={loading || isPaymentLoading}
+						disabled={loading || isPaymentLoading || isProcessing}
 						className='px-8 py-3 bg-green-600 hover:bg-green-700 text-lg font-semibold'
 					>
 						{loading ? (
@@ -273,11 +282,14 @@ const PayementStep = ({
 							<>
 								<CreditCard className='w-5 h-5 mr-2' />
 								<span className='text-sm md:text-lg'>
-									Сплатити ${totalAmount} і записатися (ТЕСТ)
+									{readyToPay
+										? `Підтвердити оплату $${totalAmount}`
+										: `Сплатити $${totalAmount} і записатися`}
 								</span>
 							</>
 						)}
 					</Button>
+				</div>
 				</div>
 			)}
 		</div>

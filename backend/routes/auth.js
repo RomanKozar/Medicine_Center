@@ -6,6 +6,16 @@ const Patient = require('../modal/Patient')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
+const { authenticate } = require('../middleware/auth')
+const {
+	createResetToken,
+	hashResetToken,
+	buildResetUrl,
+	sendResetEmail,
+} = require('../utils/passwordReset')
+const { createTestCaptcha, verifyTestCaptcha } = require('../utils/testCaptcha')
+
+const TEST_DEMO_PASSWORD = 'Password123'
 
 const router = express.Router()
 
@@ -157,6 +167,175 @@ router.get(
 //Auth failure
 router.get('/failure', (req, res) =>
 	res.badRequest('Google authentication Failed')
+)
+
+const accountModel = type => (type === 'doctor' ? Doctor : Patient)
+
+router.post(
+	'/forgot-password',
+	[
+		body('email').isEmail(),
+		body('type').isIn(['doctor', 'patient']),
+	],
+	validate,
+	async (req, res) => {
+		try {
+			const email = req.body.email.trim()
+			const type = req.body.type
+			const Model = accountModel(type)
+			const account = await Model.findOne({
+				email: new RegExp(
+					`^${email.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`,
+					'i'
+				),
+			})
+			const message =
+				'Якщо обліковий запис існує, інструкцію для зміни пароля надіслано.'
+
+			if (!account) {
+				return res.ok({ sent: false }, message)
+			}
+
+			const reset = createResetToken()
+			account.resetPasswordToken = reset.hash
+			account.resetPasswordExpires = reset.expires
+			await account.save()
+
+			const resetUrl = buildResetUrl(type, reset.token)
+			const delivery = await sendResetEmail({ to: account.email, resetUrl })
+
+			if (!delivery.sent) {
+				console.log(`Password reset link for ${account.email}: ${resetUrl}`)
+			}
+
+			res.ok(
+				{
+					sent: delivery.sent,
+					demoLink: delivery.sent ? undefined : resetUrl,
+				},
+				delivery.sent
+					? message
+					: 'Пошту не налаштовано. Для локальної демонстрації відкрийте посилання нижче.'
+			)
+		} catch (error) {
+			res.serverError('Password reset failed', [error.message])
+		}
+	}
+)
+
+router.post(
+	'/reset-password',
+	[
+		body('token').isString().isLength({ min: 20 }),
+		body('type').isIn(['doctor', 'patient']),
+		body('password').isLength({ min: 6 }),
+	],
+	validate,
+	async (req, res) => {
+		try {
+			const Model = accountModel(req.body.type)
+			const account = await Model.findOne({
+				resetPasswordToken: hashResetToken(req.body.token),
+				resetPasswordExpires: { $gt: new Date() },
+			})
+
+			if (!account) {
+				return res.badRequest('Посилання недійсне або строк його дії закінчився')
+			}
+
+			account.password = await bcrypt.hash(req.body.password, 12)
+			account.resetPasswordToken = undefined
+			account.resetPasswordExpires = undefined
+			await account.save()
+
+			res.ok({ type: req.body.type }, 'Пароль змінено')
+		} catch (error) {
+			res.serverError('Password reset failed', [error.message])
+		}
+	}
+)
+
+router.get('/test-captcha', authenticate, (req, res) => {
+	res.ok(createTestCaptcha(), 'Тестову перевірку створено')
+})
+
+router.post(
+	'/test-password-preview',
+	authenticate,
+	[
+		body('captchaId').isString().notEmpty(),
+		body('captchaAnswer').isString().notEmpty(),
+	],
+	validate,
+	async (req, res) => {
+		try {
+			if (!verifyTestCaptcha(req.body.captchaId, req.body.captchaAnswer)) {
+				return res.badRequest('Код перевірки не збігається. Оновіть його і спробуйте ще раз.')
+			}
+			if (!req.user.password) {
+				return res.badRequest(
+					'Цей обліковий запис входить через Google. Окремого пароля немає.'
+				)
+			}
+
+			const stillDemo = await bcrypt.compare(TEST_DEMO_PASSWORD, req.user.password)
+			if (!stillDemo) {
+				return res.ok(
+					{ visible: false },
+					'Пароль уже змінювали. Показати його не можна: у базі лишився лише хеш.'
+				)
+			}
+
+			res.ok(
+				{ visible: true, password: TEST_DEMO_PASSWORD },
+				'Це тестовий пароль демонстраційного акаунта.'
+			)
+		} catch (error) {
+			res.serverError('Password preview failed', [error.message])
+		}
+	}
+)
+
+router.post(
+	'/change-password',
+	authenticate,
+	[
+		body('currentPassword').isString().notEmpty(),
+		body('newPassword').isLength({ min: 6 }),
+		body('captchaId').isString().notEmpty(),
+		body('captchaAnswer').isString().notEmpty(),
+	],
+	validate,
+	async (req, res) => {
+		try {
+			if (!verifyTestCaptcha(req.body.captchaId, req.body.captchaAnswer)) {
+				return res.badRequest('Код перевірки не збігається. Оновіть його і спробуйте ще раз.')
+			}
+			if (!req.user.password) {
+				return res.badRequest(
+					'Цей обліковий запис входить через Google. Пароль можна задати через відновлення.'
+				)
+			}
+
+			const matches = await bcrypt.compare(
+				req.body.currentPassword,
+				req.user.password
+			)
+			if (!matches) return res.badRequest('Поточний пароль не збігається')
+			if (req.body.currentPassword === req.body.newPassword) {
+				return res.badRequest('Новий пароль має відрізнятися від поточного')
+			}
+
+			req.user.password = await bcrypt.hash(req.body.newPassword, 12)
+			req.user.resetPasswordToken = undefined
+			req.user.resetPasswordExpires = undefined
+			await req.user.save()
+
+			res.ok({ changed: true }, 'Пароль змінено')
+		} catch (error) {
+			res.serverError('Password change failed', [error.message])
+		}
+	}
 )
 
 module.exports = router

@@ -12,12 +12,10 @@ import {
 	Clock,
 	DollarSign,
 	MapPin,
-	Phone,
 	Plus,
 	Star,
 	TrendingUp,
 	Users,
-	Video,
 } from 'lucide-react'
 import PrescriptionModal from './PrescriptionModal'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -26,9 +24,8 @@ import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import {
+	getPriorityColor,
 	getSpecializationLabel,
-	getStatusColor,
-	getStatusLabel,
 } from '@/lib/constant'
 
 const DoctorDashboardContent = () => {
@@ -98,20 +95,6 @@ const DoctorDashboardContent = () => {
 			minute: '2-digit',
 			hour12: true,
 		})
-	}
-
-	const canJoinCall = (appointment: any) => {
-		const appointmentTime = new Date(appointment.slotStartIso)
-		const now = new Date()
-		const diffMintues =
-			(appointmentTime.getTime() - now.getTime()) / (1000 * 60)
-
-		return (
-			diffMintues <= 15 && //not earliar than 15 min before start
-			diffMintues >= -120 && //not later than 2 hours after start
-			(appointment.status === 'Scheduled' ||
-				appointment.status === 'In Progress')
-		)
 	}
 
 	if (loading || !dashboardData) {
@@ -280,7 +263,7 @@ const DoctorDashboardContent = () => {
 							<CardHeader className='flex flex-row items-center justify-between'>
 								<CardTitle className='flex items-center space-x-2'>
 									<Calendar className='w-5 h-5 text-blue-500' />
-									<span>Розклад на сьогодні</span>
+									<span>Черга на сьогодні за пріоритетом</span>
 									<Badge variant='secondary' className='ml-2'>
 										{dashboardData?.todayAppointments?.length} записів
 									</Badge>
@@ -296,63 +279,38 @@ const DoctorDashboardContent = () => {
 								{dashboardData?.todayAppointments?.length > 0 ? (
 									dashboardData?.todayAppointments?.map(
 										(appointment: Appointment) => (
-											<div
+											<Link
 												key={appointment?._id}
-												className='flex items-center space-x-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors'
+												href={`/doctor/appointments?id=${appointment._id}`}
+												className={`flex items-center gap-3 p-3 border rounded-lg transition-colors ${
+													appointment.priorityLevel === 'emergency'
+														? 'border-red-300 bg-red-50'
+														: 'hover:bg-gray-50'
+												}`}
 											>
-												<div className='flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg'>
-													<Clock className='w-6 h-6 text-blue-600' />
-												</div>
-												<div className='flex-1'>
-													<div className='flex items-center justify-between'>
-														<h4 className='font-semibold text-gray-900'>
+												<Badge className={getPriorityColor(appointment.priorityLevel || '')}>
+													{appointment.priorityLabel || 'Без оцінки'}
+												</Badge>
+												<div className='min-w-0 flex-1'>
+													<div className='flex items-center justify-between gap-2'>
+														<h4 className='font-semibold text-gray-900 truncate'>
 															{appointment?.patientId?.name}
+															{appointment?.patientId?.age
+																? `, ${appointment.patientId.age}`
+																: ''}
 														</h4>
-														<div className='text-sm font-medium text-blue-600 '>
+														<span className='text-sm text-blue-600 shrink-0'>
 															{formateDate(appointment.slotStartIso)}
-														</div>
+														</span>
 													</div>
-
-													<p className='text-sm text-gray-600 line-clamp-1'>
-														Вік: {appointment?.patientId?.age}
+													<p className='text-sm text-gray-600 truncate'>
+														{(appointment.symptoms || '').replace(
+															/^Демо-черга:\s*/,
+															''
+														)}
 													</p>
-
-													<p className='text-sm text-gray-600 line-clamp-1'>
-														{appointment?.symptoms.substring(0, 80)}
-													</p>
-													<div className='flex items-center space-x-4 mt-2'>
-														<Badge
-															className={getStatusColor(appointment.status)}
-														>
-															{getStatusLabel(appointment.status)}
-														</Badge>
-														<div className='flex items-center space-x-1'>
-															{appointment.consultationType ===
-															'Video Consultation' ? (
-																<Video className='w-4 h-4 text-blue-600' />
-															) : (
-																<Phone className='w-4 h-4 text-green-600' />
-															)}
-															<span className='text-sm text-gray-500'>
-																${appointment.doctorId?.fees}
-															</span>
-														</div>
-													</div>
 												</div>
-												<div className='flex space-x-2'>
-													{canJoinCall(appointment) && (
-														<Link href={`/call/${appointment._id}`}>
-															<Button
-																size='sm'
-																className='bg-green-600 hover:bg-green-700'
-															>
-																<Video className='w-4 h-4 mr-2' />
-																Почати
-															</Button>
-														</Link>
-													)}
-												</div>
-											</div>
+											</Link>
 										)
 									)
 								) : (
@@ -385,38 +343,33 @@ const DoctorDashboardContent = () => {
 									{dashboardData?.upcomingAppointments?.length > 0 ? (
 										dashboardData?.upcomingAppointments?.map(
 											(appointment: Appointment) => (
-												<div
+												<Link
 													key={appointment?._id}
-													className='flex items-center space-x-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors'
+													href={`/doctor/appointments?id=${appointment._id}`}
+													className='block p-3 border rounded-lg hover:bg-gray-50 transition-colors'
 												>
-													<Avatar className='w-10 h-10'>
-														<AvatarImage
-															src={appointment.patientId.profileImage}
-														/>
-														<AvatarFallback className='bg-green-100 text-green-600 text-sm'>
-															{appointment.patientId?.name?.charAt(0)}
-														</AvatarFallback>
-													</Avatar>
-													<div className='flex-1 min-w-0'>
+													<div className='flex items-center justify-between gap-2'>
 														<h4 className='font-semibold text-gray-900 text-sm truncate'>
 															{appointment?.patientId?.name}
 														</h4>
-														<div className='text-sm font-medium text-blue-600 '>
-															{formateDate(appointment.slotStartIso)}
-														</div>
-														<div className='flex items-center space-x-1 mt-1'>
-															{appointment.consultationType ===
-															'Video Consultation' ? (
-																<Video className='w-4 h-4 text-blue-600' />
-															) : (
-																<Phone className='w-4 h-4 text-green-600' />
+														<Badge
+															className={getPriorityColor(
+																appointment.priorityLevel || ''
 															)}
-															<span className='text-sm text-gray-500'>
-																${appointment.doctorId?.fees}
-															</span>
-														</div>
+														>
+															{appointment.priorityLabel || 'Без оцінки'}
+														</Badge>
 													</div>
-												</div>
+													<p className='text-sm text-gray-600 truncate mt-1'>
+														{(appointment.symptoms || '').replace(
+															/^Демо-черга:\s*/,
+															''
+														)}
+													</p>
+													<div className='text-xs font-medium text-blue-600 mt-1'>
+														{formateDate(appointment.slotStartIso)}
+													</div>
+												</Link>
 											)
 										)
 									) : (

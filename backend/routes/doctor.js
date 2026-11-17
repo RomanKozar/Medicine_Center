@@ -2,6 +2,7 @@ const express = require('express')
 const { query, body } = require('express-validator')
 const validate = require('../middleware/validate')
 const { authenticate, requireRole } = require('../middleware/auth')
+const { sortQueue } = require('../utils/prioritize')
 const Doctor = require('../modal/Doctor')
 const Appointment = require('../modal/Appointment')
 
@@ -178,18 +179,19 @@ router.get(
 			})
 				.populate('patientId', 'name profileImage age email phone')
 				.populate('doctorId', 'name fees profileImage specialization')
-				.sort({ slotStartIso: 1 })
+
+			const todayQueue = sortQueue(todayAppointments)
 
 			//upcoming appointment with full population
-			const upcomingAppointments = await Appointment.find({
+			const upcomingRaw = await Appointment.find({
 				doctorId,
 				slotStartIso: { $gt: endOfDay },
 				status: { $ne: 'Cancelled' },
 			})
 				.populate('patientId', 'name profileImage age email phone')
 				.populate('doctorId', 'name fees profileImage specialization')
-				.sort({ slotStartIso: 1 })
-				.limit(5)
+
+			const upcomingAppointments = sortQueue(upcomingRaw).slice(0, 5)
 
 			const uniquePatientIds = await Appointment.distinct('patientId', {
 				doctorId,
@@ -226,7 +228,7 @@ router.get(
 					completedAppointments: completedAppointmentCount,
 					averageRating: 4.8,
 				},
-				todayAppointments,
+				todayAppointments: todayQueue,
 				upcomingAppointments,
 				performance: {
 					pateintSatisfaction: 4.8,

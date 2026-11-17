@@ -37,7 +37,7 @@ const FAQSection = () => {
 							<Card key={index} className='bg-card border border-border'>
 								<CardContent className='p-0'>
 									<button
-										className='w-full px-6 py-4 text-left flex items-center justify-between hover:bg-accent/50 transition-colors duration-200'
+										className='w-full px-6 py-4 text-left flex items-center justify-between hover:bg-accent/50 transition-colors duration-200 cursor-pointer'
 										onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
 									>
 										<span className='text-lg font-medium text-primary pr-4'>

@@ -44,6 +44,15 @@ const LandingHero = () => {
 					>
 						Записатися на відеовізит
 					</Button>
+					<Link href='/advice'>
+						<Button
+							size='lg'
+							variant='outline'
+							className='w-full border-blue-600 text-blue-600 hover:bg-blue-50 rounded-full px-8 py-3 text-lg'
+						>
+							Описати проблему
+						</Button>
+					</Link>
 					<Link href='/login/doctor'>
 						<Button
 							size='lg'
@@ -63,7 +72,7 @@ const LandingHero = () => {
 								<button
 									key={category.id}
 									onClick={() => handleCategoryClick(category.title)}
-									className='flex flex-col items-center min-w-[100px] group transition-transform'
+									className='flex flex-col items-center min-w-[100px] group transition-transform cursor-pointer'
 								>
 									<div
 										className={`w-12 h-12 ${category.color} rounded-2xl flex items-center justify-center mb-2 group-hover:shadow-xl transition-all duration-200`}

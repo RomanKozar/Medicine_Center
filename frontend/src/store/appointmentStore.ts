@@ -1,4 +1,5 @@
 import { getWithAuth, postWithAuth, putWithAuth } from '@/service/httpService'
+import { TriageInput } from '@/lib/triage'
 import { create } from 'zustand'
 
 export interface Appointment {
@@ -11,6 +12,40 @@ export interface Appointment {
 	consultationType: 'Video Consultation' | 'Voice Call'
 	status: 'Scheduled' | 'Completed' | 'Cancelled' | 'In Progress'
 	symptoms: string
+	triage?: {
+		complaint?: string
+		severity?: number
+		durationHours?: number
+		redFlags?: string[]
+		hasChronicCondition?: boolean
+	}
+	priorityScore?: number
+	systemPriorityScore?: number
+	systemPriorityLevel?: string
+	systemPriorityReasons?: string[]
+	priorityLevel?: string
+	priorityLabel?: string
+	priorityReasons?: string[]
+	systemPriorityLabel?: string
+	priorityOverridden?: boolean
+	priorityOverrideReason?: string
+	slotHistory?: {
+		from?: string
+		to?: string
+		at?: string
+	}[]
+	priorityHistory?: {
+		fromLabel?: string
+		fromScore?: number
+		toLabel?: string
+		toScore?: number
+		reason?: string
+		actor?: string
+		actorName?: string
+		at?: string
+	}[]
+	specialtyMatch?: boolean
+	specialtyNote?: string
 	zegoRoomId: string
 	fees: number
 	prescription?: string
@@ -34,6 +69,7 @@ interface BookingData {
 	slotEndIso: string
 	consultationType?: string
 	symptoms: string
+	triage?: TriageInput
 	date: string
 	consultationFees: number
 	platformFees: number
@@ -70,6 +106,16 @@ interface AppointmentState {
 		appointmentId: string,
 		status: string
 	) => Promise<void>
+	overridePriority: (
+		appointmentId: string,
+		level: string,
+		reason: string
+	) => Promise<void>
+	rescheduleAppointment: (
+		appointmentId: string,
+		slotStartIso: string
+	) => Promise<void>
+	cancelAppointment: (appointmentId: string) => Promise<void>
 }
 
 export const useAppointmentStore = create<AppointmentState>((set, get) => ({
@@ -236,6 +282,62 @@ export const useAppointmentStore = create<AppointmentState>((set, get) => ({
 			set({ error: error.message })
 		} finally {
 			set({ loading: false, error: null })
+		}
+	},
+	overridePriority: async (appointmentId, level, reason) => {
+		set({ error: null })
+		try {
+			const response = await putWithAuth(
+				`appointment/priority/${appointmentId}`,
+				{ level, reason }
+			)
+			const updated = response.data
+			set(state => ({
+				appointments: state.appointments
+					.map(apt =>
+						apt._id === appointmentId ? { ...apt, ...updated } : apt
+					)
+					.sort(
+						(a, b) => (b.priorityScore || 0) - (a.priorityScore || 0)
+					),
+			}))
+		} catch (error: any) {
+			set({ error: error.message })
+			throw error
+		}
+	},
+	rescheduleAppointment: async (appointmentId, slotStartIso) => {
+		set({ error: null })
+		try {
+			const response = await putWithAuth(
+				`appointment/reschedule/${appointmentId}`,
+				{ slotStartIso }
+			)
+			const updated = response.data
+			set(state => ({
+				appointments: state.appointments.map(apt =>
+					apt._id === appointmentId ? { ...apt, ...updated } : apt
+				),
+			}))
+		} catch (error: any) {
+			set({ error: error.message })
+			throw error
+		}
+	},
+	cancelAppointment: async appointmentId => {
+		set({ error: null })
+		try {
+			await putWithAuth(`appointment/cancel/${appointmentId}`, {})
+			set(state => ({
+				appointments: state.appointments.map(apt =>
+					apt._id === appointmentId
+						? { ...apt, status: 'Cancelled' as const }
+						: apt
+				),
+			}))
+		} catch (error: any) {
+			set({ error: error.message })
+			throw error
 		}
 	},
 }))

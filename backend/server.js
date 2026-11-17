@@ -43,7 +43,16 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => console.log('MongoDB connected'))
+	.then(async () => {
+		console.log('MongoDB connected')
+		try {
+			const Appointment = require('./modal/Appointment')
+			await Appointment.syncIndexes()
+			console.log('Appointment indexes synced')
+		} catch (error) {
+			console.error('Appointment index sync failed:', error.message)
+		}
+	})
 	.catch(err => console.error('MongoDB connection error:', err))
 
 app.use('/api/auth', require('./routes/auth'))

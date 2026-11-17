@@ -188,6 +188,21 @@ export const getStatusLabel = (status: string): string => {
 	}
 }
 
+export const getPriorityColor = (level: string) => {
+	switch (level) {
+		case 'emergency':
+			return 'bg-red-100 text-red-800'
+		case 'urgent':
+			return 'bg-orange-100 text-orange-800'
+		case 'planned':
+			return 'bg-blue-100 text-blue-800'
+		case 'routine':
+			return 'bg-gray-100 text-gray-700'
+		default:
+			return 'bg-gray-100 text-gray-700'
+	}
+}
+
 export const getConsultationTypeLabel = (type: string): string => {
 	switch (type) {
 		case 'Video Consultation':
@@ -245,7 +260,7 @@ export const footerSections = [
 	{
 		title: 'Компанія',
 		links: [
-			{ text: 'Про нас', href: '/about' },
+			{ text: 'Як рахується пріоритет', href: '/priority-rules' },
 			{ text: 'Центр підтримки', href: '/support' },
 			{ text: 'Звʼязатися з нами', href: '/contact' },
 		],

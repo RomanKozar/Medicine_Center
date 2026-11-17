@@ -8,8 +8,8 @@ import {
 	User,
 } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import {
@@ -22,7 +22,14 @@ import {
 } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { getRoleLabel } from '@/lib/constant'
+import {
+	SLOT_NOTICE_EVENT,
+	markSlotNoticeSeen,
+	readSeenSlotNotices,
+	unseenSlotNotices,
+} from '@/lib/slotNotices'
 import { userAuthStore } from '@/store/authStore'
+import { useAppointmentStore } from '@/store/appointmentStore'
 
 interface HeaderProps {
 	showDashboardNav?: boolean
@@ -36,9 +43,32 @@ interface NavigationItem {
 }
 
 const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
-	const { user, isAuthenticated } = userAuthStore()
+	const { user, isAuthenticated, logout } = userAuthStore()
+	const { appointments, fetchAppointments } = useAppointmentStore()
+	const [seenNotices, setSeenNotices] = useState<Record<string, string>>({})
+	const router = useRouter()
 
 	const pathname = usePathname()
+	const notices =
+		user?.type === 'patient' ? unseenSlotNotices(appointments, seenNotices) : []
+
+	useEffect(() => {
+		setSeenNotices(readSeenSlotNotices())
+		const sync = () => setSeenNotices(readSeenSlotNotices())
+		window.addEventListener(SLOT_NOTICE_EVENT, sync)
+		return () => window.removeEventListener(SLOT_NOTICE_EVENT, sync)
+	}, [])
+
+	useEffect(() => {
+		if (user?.type === 'patient' && showDashboardNav) {
+			fetchAppointments('patient')
+		}
+	}, [user, showDashboardNav, fetchAppointments])
+
+	const handleLogout = () => {
+		logout()
+		router.push('/')
+	}
 
 	const getDashboardNavigation = (): NavigationItem[] => {
 		if (!user || !showDashboardNav) return []
@@ -50,6 +80,18 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 					icon: Calendar,
 					href: '/patient/dashboard',
 					active: pathname?.includes('/patient/dashboard') || false,
+				},
+				{
+					lable: 'Профіль',
+					icon: User,
+					href: '/patient/profile',
+					active: pathname?.includes('/patient/profile') || false,
+				},
+				{
+					lable: 'Налаштування',
+					icon: Settings,
+					href: '/patient/settings',
+					active: pathname?.includes('/patient/settings') || false,
 				},
 			]
 		} else if (user?.type === 'doctor') {
@@ -65,6 +107,12 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 					icon: Calendar,
 					href: '/doctor/appointments',
 					active: pathname?.includes('/doctor/appointments') || false,
+				},
+				{
+					lable: 'Пріоритет',
+					icon: Stethoscope,
+					href: '/priority-rules',
+					active: pathname?.includes('/priority-rules') || false,
 				},
 			]
 		}
@@ -108,12 +156,44 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 
 				{isAuthenticated && showDashboardNav ? (
 					<div className='flex items-center space-x-4'>
-						<Button variant='ghost' size='sm' className='relative'>
-							<Bell className='w-5 h-5' />
-							<Badge className='absolute -top-1 -right-1 w-5 h-5 text-xs bg-red-500 hover:bg-red-600'>
-								4
-							</Badge>
-						</Button>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant='ghost' size='sm' className='relative'>
+									<Bell className='w-5 h-5' />
+									{notices.length > 0 && (
+										<Badge className='absolute -top-1 -right-1 w-5 h-5 text-xs bg-red-500 hover:bg-red-600'>
+											{notices.length}
+										</Badge>
+									)}
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align='end' className='w-80'>
+								<DropdownMenuLabel>Сповіщення</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+								{notices.length === 0 ? (
+									<p className='px-2 py-3 text-sm text-gray-500'>
+										Немає нових сповіщень
+									</p>
+								) : (
+									notices.map(notice => (
+										<DropdownMenuItem key={`${notice.id}-${notice.at}`} asChild>
+											<Link
+												href={`/patient/dashboard?id=${notice.id}`}
+												onClick={() => markSlotNoticeSeen(notice.id, notice.at)}
+												className='flex flex-col items-start gap-1'
+											>
+												<span className='font-medium'>
+													{notice.doctorName} змінив час прийому
+												</span>
+												<span className='text-xs text-gray-500'>
+													Було {notice.fromLabel}. Стало {notice.toLabel}.
+												</span>
+											</Link>
+										</DropdownMenuItem>
+									))
+								)}
+							</DropdownMenuContent>
+						</DropdownMenu>
 
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
@@ -183,7 +263,7 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 								</DropdownMenuItem>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem
-									// onClick={handleLogout}
+									onClick={handleLogout}
 									className='text-red-600'
 								>
 									<LogOut className='w-4 h-4 mr-2' />
@@ -196,6 +276,22 @@ const Header: React.FC<HeaderProps> = ({ showDashboardNav = false }) => {
 					<div className='flex items-center space-x-3'>
 						{!isAuthenticated ? (
 							<>
+								<Link href='/advice'>
+									<Button
+										variant='ghost'
+										className='text-blue-900 font-medium hover:text-blue-700 hidden lg:inline-flex'
+									>
+										Куди звернутися
+									</Button>
+								</Link>
+								<Link href='/priority-rules'>
+									<Button
+										variant='ghost'
+										className='text-blue-900 font-medium hover:text-blue-700 hidden md:inline-flex'
+									>
+										Як рахується пріоритет
+									</Button>
+								</Link>
 								<Link href='/login/patient'>
 									<Button
 										variant='ghost'

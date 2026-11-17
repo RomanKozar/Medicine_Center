@@ -8,11 +8,12 @@ import { useDoctorStore } from '@/store/doctorStore'
 import { ArrowLeft, Check } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import CalendarStep from '@/components/BookingSteps/CalendarStep'
 import ConsultationStep from '@/components/BookingSteps/ConsultationStep'
 import PayementStep from '@/components/BookingSteps/PayementStep'
+import { emptyTriage, TriageInput } from '@/lib/triage'
 
 const page = () => {
 	const params = useParams()
@@ -29,6 +30,7 @@ const page = () => {
 	const [selectedSlot, setSelectedSlot] = useState('')
 	const [consultationType, setConsultationType] = useState('Video Consultation')
 	const [symptoms, setSymptoms] = useState('')
+	const [triage, setTriage] = useState<TriageInput>(emptyTriage)
 	const [isPaymentProcessing, setIsPaymentProcessing] = useState(false)
 	const [availableDates, setAvailableDates] = useState<string[]>([])
 	const [availableSlots, setAvailableSlots] = useState<string[]>([])
@@ -36,6 +38,7 @@ const page = () => {
 		string | null
 	>(null)
 	const [patientName, setPatientName] = useState<string>('')
+	const bookingLock = useRef(false)
 
 	useEffect(() => {
 		if (doctorId) {
@@ -119,11 +122,13 @@ const page = () => {
 	}
 
 	const handleBooking = async () => {
-		if (!selectedDate || !selectedSlot || !symptoms.trim()) {
+		if (bookingLock.current || isPaymentProcessing) return
+		if (!selectedDate || !selectedSlot || !symptoms.trim() || !triage.complaint) {
 			alert('Будь ласка, заповніть усі обовʼязкові поля')
 			return
 		}
 
+		bookingLock.current = true
 		setIsPaymentProcessing(true)
 		try {
 			const dateString = toLocalYMD(selectedDate)
@@ -143,6 +148,7 @@ const page = () => {
 				slotEndIso: slotEnd.toISOString(),
 				consultationType,
 				symptoms,
+				triage,
 				date: dateString,
 				consultationFees,
 				platformFees,
@@ -152,13 +158,15 @@ const page = () => {
 			//store appointemnt Id and patinet name for paymnet
 			if (appointment && appointment?._id) {
 				setCreatedAppointmentId(appointment._id)
-				setPatientName(appointment.patientId.name || 'Пацієнт')
+				setPatientName(appointment.patientId?.name || 'Пацієнт')
+				setIsPaymentProcessing(false)
 			} else {
 				await new Promise(resolve => setTimeout(resolve, 3000))
 				router.push('/patient/dashboard')
 			}
 		} catch (error: any) {
 			console.error(error)
+			bookingLock.current = false
 			setIsPaymentProcessing(false)
 		}
 	}
@@ -296,6 +304,8 @@ const page = () => {
 												setConsultationType={setConsultationType}
 												setSymptoms={setSymptoms}
 												symptoms={symptoms}
+												triage={triage}
+												setTriage={setTriage}
 												doctorFees={currentDoctor?.fees}
 												onBack={() => setCurrentStep(1)}
 												onContinue={() => setCurrentStep(3)}

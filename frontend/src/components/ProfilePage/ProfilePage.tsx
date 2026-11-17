@@ -789,7 +789,7 @@ const ProfilePage = ({ userType }: ProfileProps) => {
 									<button
 										key={item.id}
 										onClick={() => setActiveSection(item.id)}
-										className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
+										className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors cursor-pointer ${
 											activeSection === item.id
 												? 'bg-blue-100 text-blue-600 border border-blue-200'
 												: 'text-gray-600 hover:bg-gray-100'

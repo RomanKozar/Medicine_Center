@@ -1,16 +1,28 @@
 import { consultationTypes, getConsultationTypeLabel } from '@/lib/constant'
-import React from 'react'
+import {
+	complaintOptions,
+	durationOptions,
+	PriorityResult,
+	redFlagsForComplaint,
+	TriageInput,
+} from '@/lib/triage'
+import { postWithAuth } from '@/service/httpService'
+import React, { useEffect, useRef, useState } from 'react'
 import { Label } from '../ui/label'
-import { Icon } from 'lucide-react'
 import { Badge } from '../ui/badge'
 import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
+import { Checkbox } from '../ui/checkbox'
+import PriorityNote from '../triage/PriorityNote'
+import EmergencyBanner from '../triage/EmergencyBanner'
 
 interface ConsultationStepInterface {
 	consultationType: string
 	setConsultationType: (type: string) => void
 	symptoms: string
 	setSymptoms: (symptoms: string) => void
+	triage: TriageInput
+	setTriage: (triage: TriageInput) => void
 	doctorFees: number
 	onBack: () => void
 	onContinue: () => void
@@ -20,10 +32,39 @@ const ConsultationStep = ({
 	setConsultationType,
 	symptoms,
 	setSymptoms,
+	triage,
+	setTriage,
 	doctorFees,
 	onBack,
 	onContinue,
 }: ConsultationStepInterface) => {
+	const [priority, setPriority] = useState<PriorityResult | null>(null)
+	const priorityRequest = useRef(0)
+
+	useEffect(() => {
+		if (!triage.complaint) {
+			setPriority(null)
+			return
+		}
+
+		const requestId = ++priorityRequest.current
+		const timer = setTimeout(async () => {
+			try {
+				const response = await postWithAuth('appointment/preview-priority', {
+					triage,
+				})
+				if (requestId === priorityRequest.current) {
+					setPriority(response.data)
+				}
+			} catch (error) {
+				if (requestId === priorityRequest.current) {
+					console.error('Priority preview failed', error)
+				}
+			}
+		}, 800)
+
+		return () => clearTimeout(timer)
+	}, [triage])
 	const getConsultationPrice = (selectedType = consultationType) => {
 		const typePrice =
 			consultationTypes.find(ct => ct.type === selectedType)?.price || 0
@@ -111,6 +152,135 @@ const ConsultationStep = ({
 					</div>
 				</div>
 
+				<div className='mb-8 space-y-4'>
+					<div>
+						<Label className='text-base font-semibold mb-2 block'>
+							Категорія скарги *
+						</Label>
+						<select
+							value={triage.complaint}
+							onChange={e => {
+								const complaint = e.target.value
+								const allowed = new Set(
+									redFlagsForComplaint(complaint).map(flag => flag.id)
+								)
+								setTriage({
+									...triage,
+									complaint,
+									redFlags: triage.redFlags.filter(id => allowed.has(id)),
+								})
+							}}
+							className='w-full border-2 rounded-md px-3 py-2 bg-white'
+						>
+							<option value=''>Оберіть категорію</option>
+							{complaintOptions.map(option => (
+								<option key={option.id} value={option.id}>
+									{option.label}
+								</option>
+							))}
+						</select>
+					</div>
+
+					<div>
+						<Label className='text-base font-semibold mb-2 block'>
+							Наскільки сильно турбує: {triage.severity}/10
+						</Label>
+						<input
+							type='range'
+							min={1}
+							max={10}
+							value={triage.severity}
+							onChange={e =>
+								setTriage({ ...triage, severity: Number(e.target.value) })
+							}
+							className='w-full'
+						/>
+					</div>
+
+					<div>
+						<Label className='text-base font-semibold mb-2 block'>
+							Як давно це триває
+						</Label>
+						<select
+							value={triage.durationHours}
+							onChange={e =>
+								setTriage({
+									...triage,
+									durationHours: Number(e.target.value),
+								})
+							}
+							className='w-full border-2 rounded-md px-3 py-2 bg-white'
+						>
+							{durationOptions.map(option => (
+								<option key={option.hours} value={option.hours}>
+									{option.label}
+								</option>
+							))}
+						</select>
+					</div>
+
+					<div>
+						<Label className='text-base font-semibold mb-2 block'>
+							Тривожні ознаки
+						</Label>
+						{!triage.complaint ? (
+							<p className='text-sm text-gray-500'>
+								Спочатку оберіть категорію скарги. Ознаки з’являться лише ті, що до неї пасують.
+							</p>
+						) : (
+						<div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+							{redFlagsForComplaint(triage.complaint).map(flag => {
+								const checked = triage.redFlags.includes(flag.id)
+								return (
+									<label
+										key={flag.id}
+										className='flex items-start gap-2 text-sm text-gray-700'
+									>
+										<Checkbox
+											checked={checked}
+											onCheckedChange={value => {
+												const redFlags = value
+													? [...triage.redFlags, flag.id]
+													: triage.redFlags.filter(id => id !== flag.id)
+												setTriage({ ...triage, redFlags })
+											}}
+										/>
+										<span>{flag.label}</span>
+									</label>
+								)
+							})}
+						</div>
+						)}
+					</div>
+
+					<label className='flex items-center gap-2 text-sm text-gray-700'>
+						<Checkbox
+							checked={triage.hasChronicCondition}
+							onCheckedChange={value =>
+								setTriage({
+									...triage,
+									hasChronicCondition: Boolean(value),
+								})
+							}
+						/>
+						Є хронічне захворювання
+					</label>
+
+					{priority && (
+						<div className='rounded-lg border border-blue-100 bg-blue-50 p-4'>
+							<p className='font-semibold text-blue-900 mb-2'>
+								Попередній пріоритет черги
+							</p>
+							<PriorityNote priority={priority} />
+							{priority.level === 'emergency' && (
+								<div className='mt-3'>
+									<EmergencyBanner audience='patient' />
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+
 				<div className='mb-8'>
 					<Label
 						htmlFor='symptoms'
@@ -135,7 +305,7 @@ const ConsultationStep = ({
 				</Button>
 				<Button
 					onClick={onContinue}
-					disabled={!symptoms.trim()}
+					disabled={!symptoms.trim() || !triage.complaint}
 					className='px-7 py-3 bg-blue-600 hover:bg-blue-700'
 				>
 					Перейти до оплати

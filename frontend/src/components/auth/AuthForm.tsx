@@ -182,6 +182,17 @@ const AuthForm = ({ type, userRole }: AuthFormProps) => {
 							</div>
 						</div>
 
+						{!isSignup && (
+							<div className='text-right'>
+								<Link
+									href={`/forgot-password?type=${userRole}`}
+									className='text-sm text-blue-600 hover:underline'
+								>
+									Забули пароль?
+								</Link>
+							</div>
+						)}
+
 						{/* Terms checkbox for signup */}
 						{isSignup && (
 							<div className='flex items-start space-x-2'>

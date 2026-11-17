@@ -27,6 +27,59 @@ const appointmentSchema = new mongoose.Schema(
 			default: 'Scheduled',
 		},
 		symptoms: { type: String, default: '' },
+		triage: {
+			complaint: { type: String, default: '' },
+			severity: { type: Number },
+			durationHours: { type: Number },
+			redFlags: { type: [String], default: [] },
+			hasChronicCondition: { type: Boolean, default: false },
+		},
+		priorityScore: { type: Number, default: 0 },
+		priorityLevel: {
+			type: String,
+			enum: ['emergency', 'urgent', 'planned', 'routine'],
+			default: 'routine',
+		},
+		priorityLabel: { type: String, default: 'Може зачекати' },
+		priorityReasons: { type: [String], default: [] },
+		systemPriorityScore: { type: Number, default: 0 },
+		systemPriorityLevel: {
+			type: String,
+			enum: ['emergency', 'urgent', 'planned', 'routine'],
+			default: 'routine',
+		},
+		systemPriorityLabel: { type: String, default: 'Може зачекати' },
+		systemPriorityReasons: { type: [String], default: [] },
+		priorityOverridden: { type: Boolean, default: false },
+		priorityOverrideReason: { type: String, default: '' },
+		priorityOverriddenAt: { type: Date },
+		slotHistory: {
+			type: [
+				{
+					from: { type: Date },
+					to: { type: Date },
+					at: { type: Date, default: Date.now },
+				},
+			],
+			default: [],
+		},
+		priorityHistory: {
+			type: [
+				{
+					fromLevel: { type: String, default: '' },
+					fromLabel: { type: String, default: '' },
+					fromScore: { type: Number, default: 0 },
+					toLevel: { type: String, default: '' },
+					toLabel: { type: String, default: '' },
+					toScore: { type: Number, default: 0 },
+					reason: { type: String, default: '' },
+					actor: { type: String, enum: ['system', 'doctor'], default: 'system' },
+					actorName: { type: String, default: '' },
+					at: { type: Date, default: Date.now },
+				},
+			],
+			default: [],
+		},
 		zegoRoomId: { type: String, default: '' },
 		prescription: { type: String, default: '' },
 		notes: { type: String, default: '' },
@@ -63,7 +116,12 @@ const appointmentSchema = new mongoose.Schema(
 //unique: true means uniquness is enfoced across that combination of filds
 appointmentSchema.index(
 	{ doctorId: 1, date: 1, slotStartIso: 1 },
-	{ unique: true }
+	{
+		unique: true,
+		partialFilterExpression: {
+			status: { $in: ['Scheduled', 'In Progress'] },
+		},
+	}
 )
 
 module.exports = mongoose.model('Appointment', appointmentSchema)

@@ -70,6 +70,8 @@ const doctorSchema = new mongoose.Schema({
 
 	isVerified: { type: Boolean, default: false },
 	isActive: { type: Boolean, default: true },
+	resetPasswordToken: { type: String },
+	resetPasswordExpires: { type: Date },
 })
 
 module.exports = mongoose.model('Doctor', doctorSchema)
